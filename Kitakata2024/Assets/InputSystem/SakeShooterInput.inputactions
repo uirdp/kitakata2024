@@ -1,5 +1,5 @@
 {
-    "name": "StarterAssets",
+    "name": "SakeShooterInput",
     "maps": [
         {
             "name": "Player",
@@ -43,12 +43,12 @@
                 },
                 {
                     "name": "Fire",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "58db4eb5-dfe2-462e-a8ac-fdeba5ee0bed",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
