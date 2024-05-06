@@ -43,12 +43,12 @@
                 },
                 {
                     "name": "Fire",
-                    "type": "Value",
-                    "id": "58db4eb5-dfe2-462e-a8ac-fdeba5ee0bed",
+                    "type": "Button",
+                    "id": "b42d49b8-5d51-491c-bedd-d03497fb8ece",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -230,51 +230,12 @@
                 },
                 {
                     "name": "",
-                    "id": "e0f22057-e925-4f6e-85e5-4a7d24605c05",
+                    "id": "cc6df4bc-2f07-458c-9786-9c3da3ed5ceb",
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyboardMouse",
                     "action": "Fire",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "772b486b-6e37-453a-a500-1be1842670d6",
-                    "path": "<Gamepad>/rightTrigger",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad;Xbox Controller",
-                    "action": "Fire",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "Gun",
-            "id": "003fbb11-0dd5-438a-83db-c617361648d9",
-            "actions": [
-                {
-                    "name": "New action",
-                    "type": "Value",
-                    "id": "c60cffed-3bcc-4d6b-9dcd-4d7b873693ef",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "06a37d65-be59-47c4-9e29-9daea16d84a4",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "KeyboardMouse",
-                    "action": "New action",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
