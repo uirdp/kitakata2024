@@ -6,18 +6,16 @@ namespace SakeShooter
 {
     public class SakeBullet : MonoBehaviour
     {
-        public float directionX = 1.0f;
-        public float directionY = 20.0f;
-        public float directionZ = 3.0f;
-
-        public float speed = 1.0f;
+        public float speed = 1.5f;
         public float gravity = 9.8f;
 
         private Vector3 _direction;
 
         private void Start()
         {
-            _direction = new Vector3(directionX, directionY, directionZ);
+            _direction = this.transform.forward;
+            _direction.x += 1.5f;
+            _direction.z += 1.5f;
         }
 
         private void Update()
@@ -30,6 +28,12 @@ namespace SakeShooter
             // Gravity
             _direction.y -= gravity * Time.deltaTime;
             this.transform.position += _direction * speed * Time.deltaTime;
+        }
+        
+        public void SetInitialPositionAndDirection(Vector3 position, Vector3 direction)
+        {
+            this.transform.position = position;
+            _direction = direction;
         }
         
     }

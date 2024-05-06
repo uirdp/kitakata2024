@@ -34,11 +34,12 @@ namespace SakeShooter
         {
             if (_input.fire)
             {
-                Debug.Log("Fire");
-
                 var bullet = _bulletPool.Get();
+                bullet.transform.position = this.transform.position;
+                bullet.transform.forward = this.transform.forward;
             }
         }
+        
 
         #region ObjectPool
             
