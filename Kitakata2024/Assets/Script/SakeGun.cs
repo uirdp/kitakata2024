@@ -10,26 +10,17 @@ namespace SakeShooter
     public class SakeGun : MonoBehaviour
     {
         public GameObject bulletPrefab;
+        public GameObject player;
 
         public bool collectionChecks = true;
         public int maxPoolSize = 30;
         
         private IObjectPool<GameObject> _bulletPool;
-        
-#if ENABLE_INPUT_SYSTEM
-        private PlayerInput _playerInput;
-#endif
         private SakeShooterInputs _input;
         
         private void Start()
         {
-            _input = GetComponent<SakeShooterInputs>();
-#if ENABLE_INPUT_SYSTEM
-            _playerInput = GetComponent<PlayerInput>();
-#else
-			Debug.LogError( "Starter Assets package is missing dependencies. Please use Tools/Starter Assets/Reinstall Dependencies to fix it");
-#endif
-            
+            _input = player.GetComponent<SakeShooterInputs>();
             _bulletPool = new ObjectPool<GameObject>(CreateBullet, OnTakeFromPool, OnReturneToPool, OnDestroyPoolObject,
                                                      collectionChecks, 10, maxPoolSize);
         }
