@@ -11,6 +11,7 @@ namespace SakeShooter
         public float directionZ = 3.0f;
 
         public float speed = 1.0f;
+        public float gravity = 9.8f;
 
         private Vector3 _direction;
 
@@ -26,15 +27,11 @@ namespace SakeShooter
 
         private void Move()
         {
-            CalculateGravity();
+            // Gravity
+            _direction.y -= gravity * Time.deltaTime;
             this.transform.position += _direction * speed * Time.deltaTime;
         }
-
-        private void CalculateGravity()
-        {
-            // Gravity
-            _direction.y -= 9.8f * Time.deltaTime;
-        }
+        
     }
     
 }

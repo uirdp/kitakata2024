@@ -119,7 +119,6 @@ namespace SakeShooter
 			JumpAndGravity();
 			GroundedCheck();
 			Move();
-			Fire();
 		}
 
 		private void LateUpdate()
@@ -248,14 +247,6 @@ namespace SakeShooter
 			if (_verticalVelocity < _terminalVelocity)
 			{
 				_verticalVelocity += Gravity * Time.deltaTime;
-			}
-		}
-
-		private void Fire()
-		{
-			if (_input.fire)
-			{
-				Debug.Log("Fire");
 			}
 		}
 
