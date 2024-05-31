@@ -41,7 +41,7 @@ namespace SakeShooter
             if(_canFire) Fire();
         }
         
-        private async void Fire()
+        private async void Fire()   
         {
             if (_input.fire)
             {

@@ -11,6 +11,10 @@ namespace SakeShooter
 
         private Vector3 _direction;
 
+        private void Start()
+        {
+            _direction = this.transform.forward;
+        }
         private void Update()
         {
             Move();
@@ -23,11 +27,7 @@ namespace SakeShooter
             this.transform.position += _direction * speed * Time.deltaTime;
         }
         
-        public void SetInitialPositionAndDirection(Vector3 position, Vector3 direction)
-        {
-            this.transform.position = position;
-            _direction = direction;
-        }
+       
         
     }
     
