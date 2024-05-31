@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Pool;
@@ -9,9 +10,17 @@ namespace SakeShooter
 {
     public class SakeGun : MonoBehaviour
     {
+        [Header("------ Models Setting ------")]
         public GameObject bulletPrefab;
         public GameObject player;
-
+        
+        [Header("------ Parameter Settings ------")]
+        [Tooltip("The time between each shot")]
+        public float fireInterval = 0.05f;
+        
+        private bool _canFire = true;
+        
+        [Header("------ Pool Settings ------")]
         public bool collectionChecks = true;
         public int maxPoolSize = 30;
         
@@ -27,15 +36,22 @@ namespace SakeShooter
         
         private void Update()
         {
-            Fire();
+            Ray ray = new Ray(this.transform.position, this.transform.forward);
+            Debug.DrawRay(this.transform.position, ray.direction * 10, Color.red);
+            if(_canFire) Fire();
         }
         
-        private void Fire()
+        private async void Fire()
         {
             if (_input.fire)
             {
+                _canFire = false;
+                
                 var bullet = _bulletPool.Get();
                 InitializeBullet(bullet);
+
+                await UniTask.Delay(TimeSpan.FromSeconds(fireInterval));
+                _canFire = true;
             }
         }
 
