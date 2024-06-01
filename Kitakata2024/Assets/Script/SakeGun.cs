@@ -38,17 +38,13 @@ namespace SakeShooter
                 _canFire = false;
 
                 var bullet = bulletObjectPool.GetBullet();
-                InitializeBullet(bullet);
+                bullet.Initialize(this.transform.position, this.transform.forward);
                 
                 await UniTask.Delay(TimeSpan.FromSeconds(fireInterval));
                 _canFire = true;
             }
         }
 
-        private void InitializeBullet(GameObject bullet)
-        {
-            bullet.transform.position = this.transform.position;
-            bullet.transform.forward = this.transform.forward;
-        }
+
     }
 }

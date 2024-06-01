@@ -12,44 +12,47 @@ namespace SakeShooter
         public bool collectionChecks = true;
         public int maxPoolSize = 30;
 
-        private IObjectPool<GameObject> _bulletPool;
+        private IObjectPool<SakeBullet> _bulletPool;
 
         private void Start()
         {
-            _bulletPool = new ObjectPool<GameObject>(CreateBullet, OnTakeFromPool, OnReturneToPool, OnDestroyPoolObject,
+            _bulletPool = new ObjectPool<SakeBullet>(CreateBullet, OnTakeFromPool, OnReturnToPool, OnDestroyPoolObject,
                 collectionChecks, 10, maxPoolSize);
         }
 
-        private GameObject CreateBullet()
+        private SakeBullet CreateBullet()
         {
             var bullet = Instantiate(bulletPrefab);
+            var sakeBullet = bullet.GetComponent<SakeBullet>();
+            sakeBullet.RegisterOutOfScopeAction(ReturnToPool);
+            
             bullet.SetActive(false);
-            return bullet;
+            return sakeBullet;
         }
 
-        private void OnTakeFromPool(GameObject bullet)
+        private void OnTakeFromPool(SakeBullet sakeBullet)
         {
-            bullet.SetActive(true);
+            sakeBullet.gameObject.SetActive(true);
         }
 
-        private void OnReturneToPool(GameObject bullet)
+        private void OnReturnToPool(SakeBullet sakeBullet)
         {
-            bullet.SetActive(false);
+            sakeBullet.gameObject.SetActive(false);
         }
 
-        private void OnDestroyPoolObject(GameObject bullet)
+        private void OnDestroyPoolObject(SakeBullet sakeBullet)
         {
-            Destroy(bullet);
+            Destroy(sakeBullet.gameObject);
         }
 
-        public GameObject GetBullet()
+        public SakeBullet GetBullet()
         {
             return _bulletPool.Get();
         }
-        
-        public void ReturnToPool(GameObject bullet)
+
+        public void ReturnToPool(SakeBullet sakeBullet)
         {
-            _bulletPool.Release(bullet);
+            _bulletPool.Release(sakeBullet);
         }
     }
 }
