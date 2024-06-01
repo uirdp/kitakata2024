@@ -6,8 +6,11 @@ namespace SakeShooter
 {
     public class SakeBullet : MonoBehaviour
     {
-        public float speed = 4.5f;
+        [Header("------ Parameters ------")] public float speed = 4.5f;
         public float gravity = 0.8f;
+        public float distanceThreshold;
+        public Transform playerInitialPosition;
+        public BulletObjectPool bulletObjectPool;
 
         private Vector3 _direction;
 
@@ -15,9 +18,11 @@ namespace SakeShooter
         {
             _direction = this.transform.forward;
         }
+
         private void Update()
         {
             Move();
+            CheckDistanceAndReturnToPool();
         }
 
         private void Move()
@@ -26,9 +31,15 @@ namespace SakeShooter
             _direction.y -= gravity * Time.deltaTime;
             this.transform.position += _direction * speed * Time.deltaTime;
         }
-        
-       
-        
+
+        private void CheckDistanceAndReturnToPool()
+        {
+            float distance = Vector3.Distance(transform.position, playerInitialPosition.position);
+            if (distance > distanceThreshold)
+            {
+                bulletObjectPool.ReturnToPool(this.gameObject);
+
+            }
+        }
     }
-    
 }
