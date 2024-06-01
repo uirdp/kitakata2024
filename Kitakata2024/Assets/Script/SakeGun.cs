@@ -18,13 +18,16 @@ namespace SakeShooter
 
         private void Start()
         {
+            //Kind of like importing input setting
             _input = player.GetComponent<SakeShooterInputs>();
         }
 
         private void Update()
         {
+            //Skip ray part, it's for debugging
             Ray ray = new Ray(this.transform.position, this.transform.forward);
             Debug.DrawRay(this.transform.position, ray.direction * 10, Color.red);
+            
             if (_canFire) Fire();
         }
 
@@ -36,7 +39,7 @@ namespace SakeShooter
 
                 var bullet = bulletObjectPool.GetBullet();
                 InitializeBullet(bullet);
-
+                
                 await UniTask.Delay(TimeSpan.FromSeconds(fireInterval));
                 _canFire = true;
             }
