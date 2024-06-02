@@ -118,8 +118,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d037bd3c1df80d74ea8f8548f267faf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  directionX: 1
-  directionY: 20
-  directionZ: 3
-  speed: 1
-  gravity: 9.8
+  speed: 8.99
+  gravity: 0.13
+  distanceThreshold: 49.5

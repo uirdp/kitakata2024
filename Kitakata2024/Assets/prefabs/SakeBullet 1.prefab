@@ -118,7 +118,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d037bd3c1df80d74ea8f8548f267faf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 13.8
-  gravity: 1.01
-  distanceThreshold: 10
-  bulletObjectPool: {fileID: 0}
+  speed: 12.2
+  gravity: 4.9
+  distanceThreshold: 21.38

@@ -12,6 +12,7 @@ namespace SakeShooter
 
         private Vector3 _direction;
         private Vector3 _initialPosition;
+        private float _verticalSpeed = 0.0f; 
         private Action<SakeBullet> _outOfRangeAction;
         
 
@@ -19,12 +20,14 @@ namespace SakeShooter
         {
             Move();
             CheckDistanceAndReturnToPool();
+            
+            Debug.Log(_verticalSpeed);
         }
 
         private void Move()
         {
-            // Gravity
-            // _direction.y -= gravity * Time.deltaTime;
+            // This game does not require realistic simulation of gravity and other physics
+            _direction.y -= gravity * Time.deltaTime;
             this.transform.position += _direction * speed * Time.deltaTime;
         }
 
@@ -42,12 +45,30 @@ namespace SakeShooter
             _outOfRangeAction += action;
         }
         
+        private void UnRegisterOutOfScopeAction()
+        {
+            _outOfRangeAction = null;
+        }
+        
         public void Initialize(Vector3 position, Vector3 direction)
         {
             this.transform.position = position;
             this.transform.forward = direction;
             _initialPosition = position;
             _direction = direction;
+
+            _verticalSpeed = speed;
+            
+        }
+
+        private void OnDestroy()
+        {
+            UnRegisterOutOfScopeAction();
+        }
+        
+        public Vector3 ElementWiseMultiply(Vector3 v1, Vector3 v2)
+        {
+            return new Vector3(v1.x * v2.x, v1.y * v2.y, v1.z * v2.z);
         }
     }
 }

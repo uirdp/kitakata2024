@@ -20,11 +20,12 @@ namespace SakeShooter
         {
             //Kind of like importing input setting
             _input = player.GetComponent<SakeShooterInputs>();
+            _canFire = true;
         }
 
         private void Update()
         {
-            //Skip ray part, it's for debugging
+            //Ray is just for debugging
             Ray ray = new Ray(this.transform.position, this.transform.forward);
             Debug.DrawRay(this.transform.position, ray.direction * 10, Color.red);
             
@@ -44,7 +45,5 @@ namespace SakeShooter
                 _canFire = true;
             }
         }
-
-
     }
 }
