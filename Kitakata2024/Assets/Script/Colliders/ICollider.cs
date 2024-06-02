@@ -1,18 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 namespace SakeShooterSystems
 {
     #region colliders
-    public enum ColliderType
+    public enum ColliderShape
     {
         Sphere,
         Box,
     }
-    interface ICollisionSystem
+    //Union構造体
+    [System.Runtime.InteropServices.StructLayout(LayoutKind.Explicit)]
+    public struct ColliderSizeData
     {
-        void CheckCollision(ICollisionSystem other);
+        [FieldOffset(0)] public float radius;
+        [FieldOffset(0)] public Vector3 size;
+    }
+    public interface ICollisionSystem
+    {
+        //Check collision　は別の監視クラスにつけよう
+        ColliderShape Shape { get; }
+        ColliderSizeData Size { get; }
     }
     
     #endregion
