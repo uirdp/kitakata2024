@@ -27,12 +27,13 @@ namespace SakeShooterEditor
             if(GUILayout.Button("コライダーの表示"))
             {
                 _showGizmo = true;
-                _colliderSystem.OnDrawGizmos(_gizmoColor);
+                _colliderSystem.OnDrawGizmos();
             }
             
             if (EditorGUI.EndChangeCheck() && _showGizmo)
             {
-                _colliderSystem.OnDrawGizmos(_gizmoColor);
+                _colliderSystem.GizmoColor = _gizmoColor;
+                _colliderSystem.OnDrawGizmos();
             }
         }
     }

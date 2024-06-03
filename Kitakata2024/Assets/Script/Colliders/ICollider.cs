@@ -23,7 +23,9 @@ namespace SakeShooterSystems
         ColliderShape Shape { get; }
         ColliderSizeData Size { get; }
         
-        void OnDrawGizmos(Color color);
+        Color GizmoColor { get; set; }
+        
+        void OnDrawGizmos();
     }
     
     #endregion
