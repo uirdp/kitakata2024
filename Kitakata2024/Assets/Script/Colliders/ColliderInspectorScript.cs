@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEditor;
 using SakeShooterSystems;
 
+// 必要なかったクラス
 namespace SakeShooterEditor
 {
     [CustomEditor(typeof(ICollisionSystem))]
