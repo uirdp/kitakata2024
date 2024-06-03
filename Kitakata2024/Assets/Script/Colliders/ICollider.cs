@@ -17,13 +17,13 @@ namespace SakeShooterSystems
         [FieldOffset(0)] public float radius;
         [FieldOffset(0)] public Vector3 size;
     }
-    public interface ICollisionSystem
+    public interface ICollider 
     {
         //Check collision　は別の監視クラスにつけよう
         ColliderShape Shape { get; }
         ColliderSizeData Size { get; }
-        
-        Color GizmoColor { get; set; }
+        GameObject GameObject { get; }
+        bool IsEnable { get; }
         
         void OnDrawGizmos();
     }

@@ -6,15 +6,16 @@ using SakeShooterSystems;
 // 必要なかったクラス
 namespace SakeShooterEditor
 {
-    [CustomEditor(typeof(ICollisionSystem))]
+    [CustomEditor(typeof(ICollider))]
     public class ColliderInspectorScript : Editor
     {
-        private ICollisionSystem _colliderSystem = null;
+        private ICollider _collider = null;
         private Color _gizmoColor = Color.red; // default color
         private bool _showGizmo = false;
+
         private void OnEnable()
         {
-            _colliderSystem = target as ICollisionSystem;
+            _collider = target as ICollider;
         }
 
         public override void OnInspectorGUI()
@@ -28,15 +29,13 @@ namespace SakeShooterEditor
             if(GUILayout.Button("コライダーの表示"))
             {
                 _showGizmo = true;
-                _colliderSystem.OnDrawGizmos();
+                _collider.OnDrawGizmos();
             }
             
             if (EditorGUI.EndChangeCheck() && _showGizmo)
             {
-                _colliderSystem.GizmoColor = _gizmoColor;
-                _colliderSystem.OnDrawGizmos();
+                _collider.OnDrawGizmos();
             }
         }
     }
-
 }
