@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace SakeShooterSystems
@@ -21,6 +22,8 @@ namespace SakeShooterSystems
         //Check collision　は別の監視クラスにつけよう
         ColliderShape Shape { get; }
         ColliderSizeData Size { get; }
+        
+        void OnDrawGizmos(Color color);
     }
     
     #endregion

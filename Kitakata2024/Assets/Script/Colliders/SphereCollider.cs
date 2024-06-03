@@ -9,9 +9,9 @@ public class SphereCollider : MonoBehaviour, ICollisionSystem
     private ColliderShape _shape = ColliderShape.Sphere;
     public ColliderShape Shape => _shape;
     public ColliderSizeData Size => new ColliderSizeData { radius = radius };
-    public void OnDrawGizmos()
+    public void OnDrawGizmos(Color color)
     {
-        Gizmos.color = Color.red;
+        Gizmos.color = color;
         Gizmos.DrawWireSphere(transform.position, radius);
     }
 }
