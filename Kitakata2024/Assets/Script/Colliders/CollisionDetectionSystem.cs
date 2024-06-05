@@ -7,6 +7,7 @@ namespace SakeShooterSystems
 {
     public class CollisionDetectionSystem : MonoBehaviour
     {
+        //リストじゃなくて、連結キューを使った方がいい？
         [SerializeField]
         private List<ICollider> _masuColliders = new List<ICollider>();
         private List<ICollider> _bulletColldiers = new List<ICollider>();
@@ -34,22 +35,34 @@ namespace SakeShooterSystems
                 ICollider mcol = _masuColliders[i];
                 GameObject mgo = mcol.GameObject;
 
-                if (mgo.activeInHierarchy)
+                //Nullならコライダーのリストから削除
+                if (mgo == null)
                 {
-                    for (int j = _bulletColldiers.Count - 1; j >= 0; j--)
-                    {
-                        ICollider bcol = _bulletColldiers[j];
-                        GameObject bgo = bcol.GameObject;
-
-                        if (bgo.activeInHierarchy)
-                        {
-                            if(CheckCollision(mcol, mcol)) Debug.Log("Collision Detected!");
-                        }
-                        else _bulletColldiers.RemoveAt(j);
-                    }
+                    _masuColliders.RemoveAt(i);
+                    continue;
                 }
 
-                else _masuColliders.RemoveAt(i);
+                //もしもオブジェクトが非アクティブならスキップ
+                if (!mgo.activeInHierarchy)
+                    continue;
+
+                for (int j = _bulletColldiers.Count - 1; j >= 0; j--)
+                {
+                    ICollider bcol = _bulletColldiers[j];
+                    GameObject bgo = bcol.GameObject;
+
+                    if (bgo == null)
+                    {
+                        _bulletColldiers.RemoveAt(j);
+                        continue;
+                    }
+                    
+                    //どちらのオブジェクトもアクティブであれば、衝突判定を行う
+                    if (bgo.activeInHierarchy && CheckCollision(mcol, mcol))
+                    {
+                        Debug.Log("Collision Detected!");
+                    }
+                }
             }
         }
 

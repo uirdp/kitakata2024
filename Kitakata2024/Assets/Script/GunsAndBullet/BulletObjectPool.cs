@@ -1,10 +1,13 @@
 using UnityEngine;
 using UnityEngine.Pool;
+using SakeShooterSystems;
 
 namespace SakeShooter
 {
     public class BulletObjectPool : MonoBehaviour
     {
+        
+        public CollisionDetectionSystem collisionDetectionSystem;
         [Header("------ Models Setting ------")]
         public GameObject bulletPrefab;
 
