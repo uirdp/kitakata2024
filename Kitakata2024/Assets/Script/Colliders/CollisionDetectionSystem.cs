@@ -1,17 +1,24 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+using Cysharp.Threading.Tasks;
+
 
 namespace SakeShooterSystems
 {
     public class CollisionDetectionSystem : MonoBehaviour
     {
+        [Tooltip("一度目の衝突から二回目までの間隔")]
+        public float collisionDetectionInterval = 2.0f;
         //リストじゃなくて、連結キューを使った方がいい？
         //升には連結キューを用いるが、弾にはリストを用いる（プールを使っているため、挙動がわからない）
         public GameObject Masu;
         private List<ICollider> _masuColliders = new List<ICollider>();
         private List<ICollider> _bulletColldiers = new List<ICollider>();
+        
+        //衝突したコライダーを保存するリスト
+        private HashSet<ICollider> _collidersWithDetectedCollision = new HashSet<ICollider>();
 
         private void Start()
         {
@@ -33,6 +40,12 @@ namespace SakeShooterSystems
         {
             if(col.Shape == ColliderShape.Sphere) _bulletColldiers.Remove(col);
             else _masuColliders.Remove(col);
+        }
+
+        private async UniTask RemoveFromDetectedCollisionsAfterDelay(ICollider col)
+        {
+            await UniTask.Delay(TimeSpan.FromSeconds(collisionDetectionInterval));
+            _collidersWithDetectedCollision.Remove(col);
         }
 
         private void ScanColliders()
@@ -69,7 +82,11 @@ namespace SakeShooterSystems
                     //どちらのオブジェクトもアクティブであれば、衝突判定を行う
                     if (bgo.activeInHierarchy && CheckCollision(mcol, bcol))
                     {
-                        Debug.Log("Collision Detected!");
+                        if(!_collidersWithDetectedCollision.Contains(bcol)){
+                            Debug.Log("Collision Detected!");
+                            _collidersWithDetectedCollision.Add(bcol);
+                            RemoveColliderFromList(bcol);
+                        }
                     }
                 }
             }
