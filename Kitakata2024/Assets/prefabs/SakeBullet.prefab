@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8944843628522988006}
   - component: {fileID: 211316984880366819}
   - component: {fileID: 8448723448878146086}
+  - component: {fileID: 5916978747909716134}
   m_Layer: 0
   m_Name: SakeBullet
   m_TagString: Untagged
@@ -118,6 +119,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d037bd3c1df80d74ea8f8548f267faf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 8.99
+  speed: 9.35
   gravity: 0.13
   distanceThreshold: 49.5
+--- !u!114 &5916978747909716134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3620859557926149220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43fdb09c0eaa92846bdf91c520c4a969, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  radius: 1
+  gizmoColor: {r: 1, g: 0, b: 0, a: 1}

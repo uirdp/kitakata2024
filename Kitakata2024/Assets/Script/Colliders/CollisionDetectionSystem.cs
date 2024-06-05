@@ -9,30 +9,37 @@ namespace SakeShooterSystems
     {
         //リストじゃなくて、連結キューを使った方がいい？
         //升には連結キューを用いるが、弾にはリストを用いる（プールを使っているため、挙動がわからない）
-        [SerializeField]
+        public GameObject Masu;
         private List<ICollider> _masuColliders = new List<ICollider>();
         private List<ICollider> _bulletColldiers = new List<ICollider>();
-        
+
+        private void Start()
+        {
+            ICollider MasCollider = Masu.GetComponent<ICollider>();
+            AddColliderToList(MasCollider);
+        }
         private void Update()
         {
             ScanColliders();
         }
 
-        public void AddColliderToList(GameObject go)
+        public void AddColliderToList(ICollider col)
         {
-            ICollider col = go.GetComponent<ICollider>();
-            _masuColliders.Add(col);
+            if(col.Shape == ColliderShape.Sphere)  _bulletColldiers.Add(col);
+            else _masuColliders.Add(col);
         }
 
         public void RemoveColliderFromList(ICollider col)
         {
-            _masuColliders.Remove(col);
+            if(col.Shape == ColliderShape.Sphere) _bulletColldiers.Remove(col);
+            else _masuColliders.Remove(col);
         }
 
         private void ScanColliders()
         {
             for (int i = _masuColliders.Count - 1; i >= 0; i--)
             {
+                
                 ICollider mcol = _masuColliders[i];
                 GameObject mgo = mcol.GameObject;
 
@@ -40,6 +47,7 @@ namespace SakeShooterSystems
                 if (mgo == null)
                 {
                     _masuColliders.RemoveAt(i);
+                    Debug.Log("Null");
                     continue;
                 }
 
@@ -59,7 +67,7 @@ namespace SakeShooterSystems
                     }
                     
                     //どちらのオブジェクトもアクティブであれば、衝突判定を行う
-                    if (bgo.activeInHierarchy && CheckCollision(mcol, mcol))
+                    if (bgo.activeInHierarchy && CheckCollision(mcol, bcol))
                     {
                         Debug.Log("Collision Detected!");
                     }

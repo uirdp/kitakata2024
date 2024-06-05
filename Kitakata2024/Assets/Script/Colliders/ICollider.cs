@@ -17,6 +17,7 @@ namespace SakeShooterSystems
         [FieldOffset(0)] public float radius;
         [FieldOffset(0)] public Vector3 size;
     }
+    
     public interface ICollider 
     {
         //Check collision　は別の監視クラスにつけよう

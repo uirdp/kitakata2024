@@ -20,8 +20,6 @@ namespace SakeShooter
         {
             Move();
             CheckDistanceAndReturnToPool();
-            
-            Debug.Log(_verticalSpeed);
         }
 
         private void Move()

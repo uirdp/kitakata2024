@@ -27,7 +27,10 @@ namespace SakeShooter
         {
             var bullet = Instantiate(bulletPrefab);
             var sakeBullet = bullet.GetComponent<SakeBullet>();
+            var bulletCollider = bullet.GetComponent<ICollider>();
+            
             sakeBullet.RegisterOutOfScopeAction(ReturnToPool);
+            collisionDetectionSystem.AddColliderToList(bulletCollider);
             
             bullet.SetActive(false);
             return sakeBullet;
