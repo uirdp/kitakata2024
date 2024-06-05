@@ -9,8 +9,8 @@ namespace SakeShooterSystems
 {
     public class CollisionDetectionSystem : MonoBehaviour
     {
-        [Tooltip("一度目の衝突から二回目までの間隔")]
-        public float collisionDetectionInterval = 2.0f;
+        [Tooltip("一度目の衝突から二回目までの間隔(秒)")]
+        public float collisionDetectionInterval = 1.0f;
         //リストじゃなくて、連結キューを使った方がいい？
         //升には連結キューを用いるが、弾にはリストを用いる（プールを使っているため、挙動がわからない）
         public GameObject Masu;
@@ -42,7 +42,7 @@ namespace SakeShooterSystems
             else _masuColliders.Remove(col);
         }
 
-        private async UniTask RemoveFromDetectedCollisionsAfterDelay(ICollider col)
+        private async UniTaskVoid RemoveFromDetectedCollisionsAfterDelay(ICollider col)
         {
             await UniTask.Delay(TimeSpan.FromSeconds(collisionDetectionInterval));
             _collidersWithDetectedCollision.Remove(col);
@@ -84,8 +84,10 @@ namespace SakeShooterSystems
                     {
                         if(!_collidersWithDetectedCollision.Contains(bcol)){
                             Debug.Log("Collision Detected!");
+                            //Hitした判定をつける
                             _collidersWithDetectedCollision.Add(bcol);
-                            RemoveColliderFromList(bcol);
+                            //一定時間後にHit判定を解除
+                            RemoveFromDetectedCollisionsAfterDelay(bcol).Forget();
                         }
                     }
                 }
