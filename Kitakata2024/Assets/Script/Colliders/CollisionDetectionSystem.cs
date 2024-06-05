@@ -8,6 +8,7 @@ namespace SakeShooterSystems
     public class CollisionDetectionSystem : MonoBehaviour
     {
         //リストじゃなくて、連結キューを使った方がいい？
+        //升には連結キューを用いるが、弾にはリストを用いる（プールを使っているため、挙動がわからない）
         [SerializeField]
         private List<ICollider> _masuColliders = new List<ICollider>();
         private List<ICollider> _bulletColldiers = new List<ICollider>();
