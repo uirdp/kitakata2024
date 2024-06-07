@@ -11,6 +11,8 @@ namespace SakeShooterSystems
     {
         [Tooltip("一度目の衝突から二回目までの間隔(秒)")]
         public float collisionDetectionInterval = 1.0f;
+        public bool morePreciseCollisionDetection = false;
+        
         //リストじゃなくて、連結キューを使った方がいい？
         //升には連結キューを用いるが、弾にはリストを用いる（プールを使っているため、挙動がわからない）
         public GameObject Masu;
@@ -60,7 +62,6 @@ namespace SakeShooterSystems
                 if (mgo == null)
                 {
                     _masuColliders.RemoveAt(i);
-                    Debug.Log("Null");
                     continue;
                 }
 
@@ -76,6 +77,7 @@ namespace SakeShooterSystems
                     if (bgo == null)
                     {
                         _bulletColldiers.RemoveAt(j);
+                        Debug.Log("Remove!");
                         continue;
                     }
                     
@@ -83,7 +85,6 @@ namespace SakeShooterSystems
                     if (bgo.activeInHierarchy && CheckCollision(mcol, bcol))
                     {
                         if(!_collidersWithDetectedCollision.Contains(bcol)){
-                            Debug.Log("Collision Detected!");
                             //Hitした判定をつける
                             _collidersWithDetectedCollision.Add(bcol);
                             //一定時間後にHit判定を解除
@@ -103,6 +104,9 @@ namespace SakeShooterSystems
             
             Vector3 mpos = mcol.GameObject.transform.position;
             Vector3 bpos = bcol.GameObject.transform.position;
+            
+            //升の方向に半径の大きさだけ移動
+            if(morePreciseCollisionDetection) bpos += Vector3.Normalize(mpos-bpos) * bcol.Size.radius;
             
             //座標系の原点を升の中心に移動し、SDFを用いて衝突判定
             float d = SdBox(bpos - mpos, msize.size);
