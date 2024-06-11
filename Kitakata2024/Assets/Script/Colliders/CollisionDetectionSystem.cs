@@ -101,15 +101,16 @@ namespace SakeShooterSystems
             Assert.IsTrue(bcol.Shape == ColliderShape.Sphere, "bcol shape is not Sphere");
             
             ColliderSizeData msize = mcol.Size;
+            ColliderSizeData bsize = bcol.Size;
             
             Vector3 mpos = mcol.GameObject.transform.position;
             Vector3 bpos = bcol.GameObject.transform.position;
             
-            //升の方向に半径の大きさだけ移動
-            if(morePreciseCollisionDetection) bpos += Vector3.Normalize(mpos-bpos) * bcol.Size.radius;
+            //升の方向に半径の大きさだけ移動、しなくてもおおむね問題ない
+            //if(morePreciseCollisionDetection) bpos += Vector3.Normalize(mpos-bpos) * bcol.Size.radius;
             
-            //座標系の原点を升の中心に移動し、SDFを用いて衝突判定
-            float d = SdBox(bpos - mpos, msize.size);
+            //座標系の原点を升の中心に移動し、SDFを用いて衝突判定。半径の分だけサイズを大きくする
+            float d = SdBox(bpos - mpos, msize.size + bsize.radius * Vector3.one);
             return d < 0;
         }
         
