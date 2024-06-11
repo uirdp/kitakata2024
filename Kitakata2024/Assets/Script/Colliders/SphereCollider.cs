@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using SakeShooterSystems;
 
@@ -9,6 +8,7 @@ public class SphereCollider : MonoBehaviour, ICollider
     public Color gizmoColor = Color.red;
     
     private readonly ColliderShape _shape = ColliderShape.Sphere;
+    private event Action OnHitDetected;
     
     public ColliderShape Shape => _shape;
     public bool IsEnable => enabled;
@@ -21,4 +21,13 @@ public class SphereCollider : MonoBehaviour, ICollider
         Gizmos.DrawWireSphere(transform.position, radius);
     }
     
+    public void RegisterOnHitDetected(Action action)
+    {
+        OnHitDetected += action;
+    }
+    
+    public void UnregisterOnHitDetected()
+    {
+        OnHitDetected = null;
+    }
 }

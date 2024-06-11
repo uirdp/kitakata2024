@@ -1,5 +1,5 @@
 using System.Runtime.InteropServices;
-using Unity.VisualScripting;
+using System;
 using UnityEngine;
 
 namespace SakeShooterSystems
@@ -18,15 +18,16 @@ namespace SakeShooterSystems
         [FieldOffset(0)] public Vector3 size;
     }
     
-    public interface ICollider 
+    public interface ICollider
     {
-        //Check collision　は別の監視クラスにつけよう
         ColliderShape Shape { get; }
         ColliderSizeData Size { get; }
         GameObject GameObject { get; }
         bool IsEnable { get; }
         
         void OnDrawGizmos();
+        void RegisterOnHitDetected(Action action);
+        void UnregisterOnHitDetected();
     }
     
     #endregion

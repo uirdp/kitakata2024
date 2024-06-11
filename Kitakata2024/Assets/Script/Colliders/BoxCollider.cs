@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using SakeShooterSystems;
 using UnityEngine;
 
@@ -9,6 +8,7 @@ public class BoxCollider : MonoBehaviour, ICollider
     public Color gizmoColor = Color.yellow;
     
     private readonly ColliderShape _shape = ColliderShape.Box;
+    private event Action OnHitDetected;
     
     public ColliderShape Shape => _shape;
     public bool IsEnable => enabled;
@@ -20,4 +20,16 @@ public class BoxCollider : MonoBehaviour, ICollider
         Gizmos.color = gizmoColor;
         Gizmos.DrawWireCube(transform.position, size);
     }
+    
+    public void RegisterOnHitDetected(Action action)
+    {
+        OnHitDetected += action;
+    }
+    
+    public void UnregisterOnHitDetected()
+    {
+        OnHitDetected = null;
+    }
+    
+    
 }
