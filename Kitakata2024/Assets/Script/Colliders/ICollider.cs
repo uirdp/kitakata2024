@@ -28,6 +28,8 @@ namespace SakeShooterSystems
         void OnDrawGizmos();
         void RegisterOnHitDetected(Action action);
         void UnregisterOnHitDetected();
+        
+        void InvokeOnHitDetected();
     }
     
     #endregion

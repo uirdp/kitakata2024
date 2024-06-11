@@ -77,14 +77,16 @@ namespace SakeShooterSystems
                     if (bgo == null)
                     {
                         _bulletColldiers.RemoveAt(j);
-                        Debug.Log("Remove!");
                         continue;
                     }
                     
                     //どちらのオブジェクトもアクティブであれば、衝突判定を行う
                     if (bgo.activeInHierarchy && CheckCollision(mcol, bcol))
                     {
-                        if(!_collidersWithDetectedCollision.Contains(bcol)){
+                        if(!_collidersWithDetectedCollision.Contains(bcol))
+                        {
+                            //is this a callback hell?
+                            mcol.InvokeOnHitDetected();
                             //Hitした判定をつける
                             _collidersWithDetectedCollision.Add(bcol);
                             //一定時間後にHit判定を解除
