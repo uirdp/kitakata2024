@@ -20,7 +20,7 @@ namespace SakeShooter
             OnFill += Fill;
             OnFullyFilled += FullEvent;
             
-            MasuCollider.RegisterOnHitDetected(OnHitDetected);
+            MasuCollider.RegisterOnHitDetected(InvokeOnFill);
         }
     
         private void Fill(float amount)
@@ -35,7 +35,7 @@ namespace SakeShooter
         }
 
         //あとはこいつをColliderに登録するだけ！！！
-        private void OnHitDetected()
+        private void InvokeOnFill()
         {
             if(_currentAmount < capacity)
             {
