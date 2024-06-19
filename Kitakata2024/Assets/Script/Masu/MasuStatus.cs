@@ -1,7 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using SakeShooterSystems;
 using UnityEngine;
 
 namespace SakeShooter
@@ -10,22 +7,34 @@ namespace SakeShooter
     {
         public float capacity = 100.0f;
         [SerializeField] public SakeShooterSystems.BoxCollider MasuCollider;
+        public GameObject Fluid;
+        
+        public int ShaderPropertyID { get; set; }
+
+        private float _initialCapacity;
         private float _currentAmount;
     
         private event Action<float> OnFill;
         private event Action OnFullyFilled;
-        private void Initialize()
+
+        private Material _material;
+        public void Initialize()
         {
             _currentAmount = 0f;
             OnFill += Fill;
             OnFullyFilled += FullEvent;
+
+            _material = Fluid.GetComponent<Renderer>().material;
+            _material.SetFloat(ShaderPropertyID, _currentAmount);
             
             MasuCollider.RegisterOnHitDetected(InvokeOnFill);
         }
     
         private void Fill(float amount)
         {
-            _currentAmount += amount;
+            _currentAmount += amount / _initialCapacity;
+           
+            _material.SetFloat(ShaderPropertyID, _currentAmount);
             Debug.Log(amount);
         }
 
@@ -45,11 +54,6 @@ namespace SakeShooter
             {
                 OnFullyFilled?.Invoke();
             }
-        }
-
-        private void Start()
-        {
-            Initialize();
         }
     
     
