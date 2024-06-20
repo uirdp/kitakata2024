@@ -23,13 +23,16 @@ namespace SakeShooter
                 collectionChecks, 10, maxPoolSize);
         }
 
+        // Bulletのプールをつくる
         private SakeBullet CreateBullet()
         {
             var bullet = Instantiate(bulletPrefab);
             var sakeBullet = bullet.GetComponent<SakeBullet>();
             var bulletCollider = bullet.GetComponent<ICollider>();
             
+            // out of scope actionはSakeBulletが範囲外に出た時に行うアクション、プールに戻るように指定
             sakeBullet.RegisterOutOfScopeAction(ReturnToPool);
+            // 衝突判定システムにコライダーを追加
             collisionDetectionSystem.AddColliderToList(bulletCollider);
             
             bullet.SetActive(false);

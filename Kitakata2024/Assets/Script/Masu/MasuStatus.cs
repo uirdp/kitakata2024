@@ -3,12 +3,13 @@ using UnityEngine;
 
 namespace SakeShooter
 {
+    // 名前をMasuに変えた方がいいかも？
     public class MasuStatus : MonoBehaviour
     {
         public float capacity = 100.0f;
-        [SerializeField] public SakeShooterSystems.BoxCollider MasuCollider;
         public GameObject Fluid;
         public float distanceThreshold = 10.0f;
+        [SerializeField] public SakeShooterSystems.BoxCollider MasuCollider;
         
         public int ShaderPropertyID { get; set; }
 
@@ -19,15 +20,20 @@ namespace SakeShooter
     
         private event Action<float> OnFill;
         private event Action OnFullyFilled;
-        private event Action<GameObject> _outOfRangeAction;
+        private event Action<MasuStatus> _outOfRangeAction;
 
         private Material _material;
         public void Initialize()
         {
-            _currentAmount = 0f;
+            // 容量と現在の量を、[-1, 1]の範囲に正規化する -> Shaderに渡すため (FluidのShaderのFillプロパティに渡す)
+            _currentAmount = -1f;
+            _initialCapacity = capacity;
+            capacity /= capacity;
+            
             OnFill += Fill;
             OnFullyFilled += FullEvent;
-
+            
+            // Shaderのプロパティ（Fill)をセットする
             _material = Fluid.GetComponent<Renderer>().material;
             _material.SetFloat(ShaderPropertyID, _currentAmount);
             
@@ -52,6 +58,7 @@ namespace SakeShooter
         {
             if(_currentAmount < capacity)
             {
+                // これアクションでやる必要あるのかな？
                 OnFill?.Invoke(10.0f);
             }
             else
@@ -60,7 +67,7 @@ namespace SakeShooter
             }
         }
         
-        public void RegisterOutOfRangeAction(Action<GameObject> action)
+        public void RegisterOutOfRangeAction(Action<MasuStatus> action)
         {
             _outOfRangeAction += action;
         }
@@ -75,7 +82,7 @@ namespace SakeShooter
             float distance = Vector3.Distance(transform.position, _initialPosition);
             if (distance > distanceThreshold)
             {
-                _outOfRangeAction?.Invoke(this.gameObject);
+                _outOfRangeAction?.Invoke(this);
             }
         }
 

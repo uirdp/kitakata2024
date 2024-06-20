@@ -18,7 +18,6 @@ namespace SakeShooter
 
         private void Start()
         {
-            //Kind of like importing input setting
             _input = player.GetComponent<SakeShooterInputs>();
             _canFire = true;
         }

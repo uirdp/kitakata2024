@@ -14,15 +14,15 @@ namespace SakeShooter
         public bool collectionChecks = true;
         public int maxPoolSize = 30;
 
-        private IObjectPool<GameObject> _masuPool;
+        private IObjectPool<MasuStatus> _masuPool;
 
         private void Start()
         {
-            _masuPool = new ObjectPool<GameObject>(CreateMasu, OnTakeFromPool, OnReturnToPool, OnDestroyPoolObject,
+            _masuPool = new ObjectPool<MasuStatus>(CreateMasu, OnTakeFromPool, OnReturnToPool, OnDestroyPoolObject,
                 collectionChecks, 10, maxPoolSize);
         }
         
-        private GameObject CreateMasu()
+        private MasuStatus CreateMasu()
         {
             var masu = Instantiate(masuPrefab);
             var masuStatus = masu.GetComponent<MasuStatus>();
@@ -33,30 +33,30 @@ namespace SakeShooter
             masuStatus.Initialize();
             masu.SetActive(false);
 
-            return masu;
+            return masuStatus;
         }
         
-        private void OnTakeFromPool(GameObject masu)
+        private void OnTakeFromPool(MasuStatus masu)
         {
             masu.gameObject.SetActive(true);
         }
         
-        private void OnReturnToPool(GameObject masu)
+        private void OnReturnToPool(MasuStatus masu)
         {
             masu.gameObject.SetActive(false);
         }
 
-        private void OnDestroyPoolObject(GameObject masu)
+        private void OnDestroyPoolObject(MasuStatus masu)
         {
             Destroy(masu.gameObject);
         }
         
-        private void ReturnToPool(GameObject masu)
+        private void ReturnToPool(MasuStatus masu)
         {
             _masuPool.Release(masu);
         }
         
-        public GameObject GetMasu()
+        public MasuStatus GetMasu()
         {
             return _masuPool.Get();
         }
