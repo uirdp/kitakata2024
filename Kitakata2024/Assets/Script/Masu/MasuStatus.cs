@@ -8,14 +8,18 @@ namespace SakeShooter
         public float capacity = 100.0f;
         [SerializeField] public SakeShooterSystems.BoxCollider MasuCollider;
         public GameObject Fluid;
+        public float distanceThreshold = 10.0f;
         
         public int ShaderPropertyID { get; set; }
 
         private float _initialCapacity;
         private float _currentAmount;
+        private Vector3 _initialPosition;
+        
     
         private event Action<float> OnFill;
         private event Action OnFullyFilled;
+        private event Action<GameObject> _outOfRangeAction;
 
         private Material _material;
         public void Initialize()
@@ -55,7 +59,34 @@ namespace SakeShooter
                 OnFullyFilled?.Invoke();
             }
         }
-    
-    
+        
+        public void RegisterOutOfRangeAction(Action<GameObject> action)
+        {
+            _outOfRangeAction += action;
+        }
+        
+        private void UnRegisterOutOfRangeAction()
+        {
+            _outOfRangeAction = null;
+        }
+        
+        private void CheckDistanceAndReturnToPool()
+        {
+            float distance = Vector3.Distance(transform.position, _initialPosition);
+            if (distance > distanceThreshold)
+            {
+                _outOfRangeAction?.Invoke(this.gameObject);
+            }
+        }
+
+        private void Update()
+        {
+            CheckDistanceAndReturnToPool();
+        }
+
+        private void OnDestroy()
+        {
+            UnRegisterOutOfRangeAction();
+        }
     }
 }

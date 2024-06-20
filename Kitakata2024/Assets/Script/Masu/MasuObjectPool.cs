@@ -28,6 +28,7 @@ namespace SakeShooter
             var masuStatus = masu.GetComponent<MasuStatus>();
 
             masuStatus.ShaderPropertyID = Shader.PropertyToID("_Fill");
+            masuStatus.RegisterOutOfRangeAction(ReturnToPool);
             
             masuStatus.Initialize();
             masu.SetActive(false);
@@ -53,6 +54,11 @@ namespace SakeShooter
         private void ReturnToPool(GameObject masu)
         {
             _masuPool.Release(masu);
+        }
+        
+        public GameObject GetMasu()
+        {
+            return _masuPool.Get();
         }
 
     }

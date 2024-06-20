@@ -38,12 +38,6 @@ namespace SakeShooterSystems
             else _masuColliders.Add(col);
         }
 
-        public void RemoveColliderFromList(ICollider col)
-        {
-            if(col.Shape == ColliderShape.Sphere) _bulletColldiers.Remove(col);
-            else _masuColliders.Remove(col);
-        }
-
         private async UniTaskVoid RemoveFromDetectedCollisionsAfterDelay(ICollider col)
         {
             await UniTask.Delay(TimeSpan.FromSeconds(collisionDetectionInterval));
@@ -54,7 +48,6 @@ namespace SakeShooterSystems
         {
             for (int i = _masuColliders.Count - 1; i >= 0; i--)
             {
-                
                 ICollider mcol = _masuColliders[i];
                 GameObject mgo = mcol.GameObject;
 

@@ -24,11 +24,12 @@ namespace SakeShooter
 
         private void Move()
         {
-            // This game does not require realistic simulation of gravity and other physics
+            // non-realistic, but cheap ya know
             _direction.y -= gravity * Time.deltaTime;
             this.transform.position += _direction * speed * Time.deltaTime;
         }
-
+        
+        // Check if the bullet is out of range, if so, return to pool
         private void CheckDistanceAndReturnToPool()
         {
             float distance = Vector3.Distance(transform.position, _initialPosition);
@@ -48,6 +49,7 @@ namespace SakeShooter
             _outOfRangeAction = null;
         }
         
+        // Initialize the bullet with a position and direction
         public void Initialize(Vector3 position, Vector3 direction)
         {
             this.transform.position = position;
@@ -64,9 +66,5 @@ namespace SakeShooter
             UnRegisterOutOfScopeAction();
         }
         
-        public Vector3 ElementWiseMultiply(Vector3 v1, Vector3 v2)
-        {
-            return new Vector3(v1.x * v2.x, v1.y * v2.y, v1.z * v2.z);
-        }
     }
 }
