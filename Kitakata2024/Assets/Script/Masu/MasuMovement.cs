@@ -7,39 +7,32 @@ namespace SakeShooter
     public class MasuMovement : MonoBehaviour
     {
         private Masu _masu;
-        private float _speed;
+        private float _speed = 1.0f;
         private float _acceleration;
         private Vector3 _direction;
         private Vector3 _initialPosition;
-        private float _distanceThreshold;
-        private bool _isMoving;
 
-        public void Initialize(Masu masu, float speed, float acceleration, Vector3 direction, Vector3 initialPosition, float distanceThreshold)
+        public void Initialize(Masu masu, float speed, float acceleration, Vector3 direction, Vector3 initialPosition)
         {
             _masu = masu;
             _speed = speed;
             _acceleration = acceleration;
-            _direction = direction;
             _initialPosition = initialPosition;
-            _distanceThreshold = distanceThreshold;
-            _isMoving = true;
+            _direction = direction;
+            
+            this.transform.position = initialPosition;
+            Debug.Log(initialPosition);
         }
 
         private void Update()
         {
-            if (_isMoving)
-            {
-                Move();
-            }
+            Move();
         }
 
         private void Move()
         {
-            transform.position += _direction * _speed * Time.deltaTime;
-            if (Vector3.Distance(transform.position, _initialPosition) > _distanceThreshold)
-            {
-                _isMoving = false;
-            }
+            Debug.Log(this.transform.position);
+            transform.position += -Vector3.forward * _speed * Time.deltaTime;
         }
     }
 }

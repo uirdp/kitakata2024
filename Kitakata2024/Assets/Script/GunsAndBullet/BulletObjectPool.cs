@@ -32,8 +32,11 @@ namespace SakeShooter
             
             // out of scope actionはSakeBulletが範囲外に出た時に行うアクション、プールに戻るように指定
             sakeBullet.RegisterOutOfScopeAction(ReturnToPool);
+            
             // 衝突判定システムにコライダーを追加
-            collisionDetectionSystem.AddColliderToList(bulletCollider);
+            sakeBullet.ColliderID = collisionDetectionSystem.AddColliderToList(bulletCollider);
+            //　コライダー破壊時に衝突判定システムから削除するイベントを登録
+            bulletCollider.RegisterOnDestroyAction(collisionDetectionSystem.RemoveBulletCollider);
             
             bullet.SetActive(false);
             return sakeBullet;
@@ -52,6 +55,7 @@ namespace SakeShooter
         private void OnDestroyPoolObject(SakeBullet sakeBullet)
         {
             Destroy(sakeBullet.gameObject);
+            sakeBullet = null;
         }
 
         public SakeBullet GetBullet()

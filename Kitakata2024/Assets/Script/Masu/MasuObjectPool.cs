@@ -1,12 +1,13 @@
 using SakeShooter;
 using UnityEngine;
 using UnityEngine.Pool;
-
+using SakeShooterSystems;
 
 namespace SakeShooter
 {
     public class MasuObjectPool : MonoBehaviour
     {
+        public CollisionDetectionSystem collisionDetectionSystem;
         [Header("------ Models Setting ------")]
         public GameObject masuPrefab;
 
@@ -14,49 +15,62 @@ namespace SakeShooter
         public bool collectionChecks = true;
         public int maxPoolSize = 30;
 
-        private IObjectPool<MasuStatus> _masuPool;
+        private IObjectPool<Masu> _masuPool;
+        private int _shaderPropertyID;
 
         private void Start()
         {
-            _masuPool = new ObjectPool<MasuStatus>(CreateMasu, OnTakeFromPool, OnReturnToPool, OnDestroyPoolObject,
+            _masuPool = new ObjectPool<Masu>(CreateMasu, OnTakeFromPool, OnReturnToPool, OnDestroyPoolObject,
                 collectionChecks, 10, maxPoolSize);
+            
+            _shaderPropertyID = Shader.PropertyToID("_Fill");
         }
         
-        private MasuStatus CreateMasu()
+        private Masu CreateMasu()
         {
-            var masu = Instantiate(masuPrefab);
-            var masuStatus = masu.GetComponent<MasuStatus>();
-
-            masuStatus.ShaderPropertyID = Shader.PropertyToID("_Fill");
-            masuStatus.RegisterOutOfRangeAction(ReturnToPool);
+            var masuGo = Instantiate(masuPrefab);
+            var masu = masuGo.GetComponent<Masu>();
+            var col = masuGo.GetComponent<ICollider>();
+            
+            
+            var masuStatus = masu.Status;
+            var masuMovement = masu.Movement;
+            
+            // Shaderに渡すプロパティのIDを取得
+            masuStatus.ShaderPropertyID = _shaderPropertyID;
+            // 升が画面外に出た時の処理を登録
+            masu.RegisterOutOfRangeAction(ReturnToPool);
+            
+            collisionDetectionSystem.AddColliderToList(col);
+            Debug.Log(col.Size.size);
             
             masuStatus.Initialize();
-            masu.SetActive(false);
+            masuGo.SetActive(false);
 
-            return masuStatus;
+            return masu;
         }
         
-        private void OnTakeFromPool(MasuStatus masu)
+        private void OnTakeFromPool(Masu masu)
         {
             masu.gameObject.SetActive(true);
         }
         
-        private void OnReturnToPool(MasuStatus masu)
+        private void OnReturnToPool(Masu masu)
         {
             masu.gameObject.SetActive(false);
         }
 
-        private void OnDestroyPoolObject(MasuStatus masu)
+        private void OnDestroyPoolObject(Masu masu)
         {
             Destroy(masu.gameObject);
         }
         
-        private void ReturnToPool(MasuStatus masu)
+        private void ReturnToPool(Masu masu)
         {
             _masuPool.Release(masu);
         }
         
-        public MasuStatus GetMasu()
+        public Masu GetMasu()
         {
             return _masuPool.Get();
         }

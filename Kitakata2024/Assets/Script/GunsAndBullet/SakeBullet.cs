@@ -12,9 +12,15 @@ namespace SakeShooter
 
         private Vector3 _direction;
         private Vector3 _initialPosition;
-        private float _verticalSpeed = 0.0f; 
+        private int _colliderID;
         private Action<SakeBullet> _outOfRangeAction;
+        private Action<SakeBullet> _onDestoryAction;
         
+        public int ColliderID
+        {
+            get;
+            set;
+        }
 
         private void Update()
         {
@@ -49,20 +55,31 @@ namespace SakeShooter
             _outOfRangeAction = null;
         }
         
+        public void RegisterOnDestroyAction(Action<SakeBullet> action)
+        {
+            _onDestoryAction += action;
+        }
+        
+        private void UnRegisterOnDestroyAction()
+        {
+            _onDestoryAction = null;
+        }
+        
         // Initialize the bullet with a position and direction
         public void Initialize(Vector3 position, Vector3 direction)
         {
             this.transform.position = position;
             this.transform.forward = direction;
+            
             _initialPosition = position;
             _direction = direction;
-
-            _verticalSpeed = speed;
             
         }
 
         private void OnDestroy()
         {
+            _onDestoryAction?.Invoke(this);
+            UnRegisterOnDestroyAction();
             UnRegisterOutOfScopeAction();
         }
         

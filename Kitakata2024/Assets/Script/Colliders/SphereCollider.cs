@@ -16,6 +16,10 @@ namespace SakeShooterSystems{
         public bool IsEnable => enabled;
         public GameObject GameObject => gameObject;
         public ColliderSizeData Size => new ColliderSizeData { radius = radius };
+        
+        public int ColliderID { get; set; }
+        
+        private Action<ICollider> _onDestroyAction;
 
         public void OnDrawGizmos()
         {
@@ -31,6 +35,21 @@ namespace SakeShooterSystems{
         public void UnregisterOnHitDetected()
         {
             OnHitDetected = null;
+        }
+        
+        public void RegisterOnDestroyAction(Action<ICollider> action)
+        {
+            _onDestroyAction += action;
+        }
+        
+        private void UnregisterOnDestroyAction()
+        {
+            _onDestroyAction = null;
+        }
+        
+        private void OnDestroy()
+        {
+            _onDestroyAction?.Invoke(this);
         }
         
         public void InvokeOnHitDetected()

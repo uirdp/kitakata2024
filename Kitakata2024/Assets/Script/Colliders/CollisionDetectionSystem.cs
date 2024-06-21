@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Cysharp.Threading.Tasks;
+using SakeShooter;
 
 
 namespace SakeShooterSystems
@@ -32,11 +33,28 @@ namespace SakeShooterSystems
             ScanColliders();
         }
 
-        public void AddColliderToList(ICollider col)
+        public int AddColliderToList(ICollider col)
         {
-            if(col.Shape == ColliderShape.Sphere)  _bulletColldiers.Add(col);
-            else _masuColliders.Add(col);
+            if (col.Shape == ColliderShape.Sphere)
+            {
+                _bulletColldiers.Add(col);
+                return _bulletColldiers.Count - 1;
+            }
+            else if (col.Shape == ColliderShape.Box)
+            {
+                _masuColliders.Add(col);
+                return _masuColliders.Count - 1;
+            }
+
+            return -1;
         }
+        
+        public void RemoveBulletCollider(ICollider col)
+        {
+            _bulletColldiers.Remove(col);
+            Debug.Log("removed bullet collider: " + col.ColliderID);
+        }
+  
 
         private async UniTaskVoid RemoveFromDetectedCollisionsAfterDelay(ICollider col)
         {
@@ -65,13 +83,23 @@ namespace SakeShooterSystems
                 for (int j = _bulletColldiers.Count - 1; j >= 0; j--)
                 {
                     ICollider bcol = _bulletColldiers[j];
-                    GameObject bgo = bcol.GameObject;
-
-                    if (bgo == null)
+                    if (ReferenceEquals(bcol, null))
                     {
+                        Debug.Log("its null!");
                         _bulletColldiers.RemoveAt(j);
                         continue;
                     }
+                    
+                    GameObject bgo = bcol?.GameObject;
+                    
+                    if (ReferenceEquals(bgo, null))
+                    {
+                        Debug.Log("its null!");
+                        _bulletColldiers.RemoveAt(j);
+                        continue;
+                    }
+
+                    
                     
                     //どちらのオブジェクトもアクティブであれば、衝突判定を行う
                     if (bgo.activeInHierarchy && CheckCollision(mcol, bcol))
@@ -104,8 +132,8 @@ namespace SakeShooterSystems
             //升の方向に半径の大きさだけ移動、しなくてもおおむね問題ない
             //if(morePreciseCollisionDetection) bpos += Vector3.Normalize(mpos-bpos) * bcol.Size.radius;
             
-            //座標系の原点を升の中心に移動し、SDFを用いて衝突判定。半径の分だけサイズを大きくする
-            float d = SdBox(bpos - mpos, msize.size + bsize.radius * Vector3.one);
+            //座標系の原点を升の中心に移動し、SDFを用いて衝突判定。
+            float d = SdBox(bpos - mpos, msize.size);
             return d < 0;
         }
         

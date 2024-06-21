@@ -6,35 +6,38 @@ namespace SakeShooter
     // 名前をMasuに変えた方がいいかも？
     public class MasuStatus : MonoBehaviour
     {
-        public float capacity = 100.0f;
         public GameObject Fluid;
-        public float distanceThreshold = 10.0f;
-        [SerializeField] public SakeShooterSystems.BoxCollider MasuCollider;
+        [SerializeField] public SakeShooterSystems.BoxHitArea MasuCollider;
         
         public int ShaderPropertyID { get; set; }
 
         private float _initialCapacity;
         private float _currentAmount;
+        
+        private float _capacity;
         private Vector3 _initialPosition;
         
     
         private event Action<float> OnFill;
         private event Action OnFullyFilled;
-        private event Action<MasuStatus> _outOfRangeAction;
 
         private Material _material;
-        public void Initialize()
+        public void Initialize(float capacity = 100.0f)
         {
             // 容量と現在の量を、[-1, 1]の範囲に正規化する -> Shaderに渡すため (FluidのShaderのFillプロパティに渡す)
             _currentAmount = -1f;
-            _initialCapacity = capacity;
-            capacity /= capacity;
+            _capacity = capacity;
+            _initialCapacity = _capacity;
+            
+            _capacity /= _capacity;
             
             OnFill += Fill;
             OnFullyFilled += FullEvent;
             
+            //ShaderPropertyID = Shader.PropertyToID("_Fill");
             // Shaderのプロパティ（Fill)をセットする
             _material = Fluid.GetComponent<Renderer>().material;
+            ShaderPropertyID = Shader.PropertyToID("_Fill");
             _material.SetFloat(ShaderPropertyID, _currentAmount);
             
             MasuCollider.RegisterOnHitDetected(InvokeOnFill);
@@ -45,7 +48,7 @@ namespace SakeShooter
             _currentAmount += amount / _initialCapacity;
            
             _material.SetFloat(ShaderPropertyID, _currentAmount);
-            Debug.Log(amount);
+            Debug.Log("fill!");
         }
 
         private void FullEvent()
@@ -56,7 +59,7 @@ namespace SakeShooter
         //あとはこいつをColliderに登録するだけ！！！
         private void InvokeOnFill()
         {
-            if(_currentAmount < capacity)
+            if(_currentAmount <= _capacity)
             {
                 // これアクションでやる必要あるのかな？
                 OnFill?.Invoke(10.0f);
@@ -66,34 +69,12 @@ namespace SakeShooter
                 OnFullyFilled?.Invoke();
             }
         }
-        
-        public void RegisterOutOfRangeAction(Action<MasuStatus> action)
-        {
-            _outOfRangeAction += action;
-        }
-        
-        private void UnRegisterOutOfRangeAction()
-        {
-            _outOfRangeAction = null;
-        }
-        
-        private void CheckDistanceAndReturnToPool()
-        {
-            float distance = Vector3.Distance(transform.position, _initialPosition);
-            if (distance > distanceThreshold)
-            {
-                _outOfRangeAction?.Invoke(this);
-            }
-        }
 
-        private void Update()
+        private void Start()
         {
-            CheckDistanceAndReturnToPool();
+            Initialize(); //pcl
+            Debug.Log(_currentAmount);
         }
-
-        private void OnDestroy()
-        {
-            UnRegisterOutOfRangeAction();
-        }
+        
     }
 }

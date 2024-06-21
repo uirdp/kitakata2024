@@ -23,11 +23,14 @@ namespace SakeShooterSystems
         ColliderShape Shape { get; }
         ColliderSizeData Size { get; }
         GameObject GameObject { get; }
+        int ColliderID { get; set; }
         bool IsEnable { get; }
         
         void OnDrawGizmos();
         void RegisterOnHitDetected(Action action);
         void UnregisterOnHitDetected();
+        
+        void RegisterOnDestroyAction(Action<ICollider> action);
         
         void InvokeOnHitDetected();
     }
