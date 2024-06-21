@@ -55,8 +55,8 @@ namespace SakeShooter
         {
             Debug.Log("Full!");
         }
-
-        //あとはこいつをColliderに登録するだけ！！！
+      
+        
         private void InvokeOnFill()
         {
             if(_currentAmount <= _capacity)

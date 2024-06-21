@@ -1,30 +1,35 @@
 using System;
-using UnityEngine;
 using SakeShooterSystems;
+using UnityEngine;
 
-namespace SakeShooterSystems{
-
-    public class SphereCollider : MonoBehaviour, ICollider
+namespace SakeShooterSystems
+{
+    public class BoxCollider : MonoBehaviour, ICollider
     {
-        public float radius = 3.0f;
-        public Color gizmoColor = Color.red;
+        public Vector3 size = new Vector3(2.0f, 2.0f, 2.0f);
+        public Color gizmoColor = Color.yellow;
 
-        private readonly ColliderShape _shape = ColliderShape.Sphere;
+        private readonly ColliderShape _shape = ColliderShape.Box;
         private event Action OnHitDetected;
 
         public ColliderShape Shape => _shape;
+        
         public bool IsEnable => enabled;
         public GameObject GameObject => gameObject;
-        public ColliderSizeData Size => new ColliderSizeData { radius = radius };
+        public ColliderSizeData Size => new ColliderSizeData { size = size };
         
         public int ColliderID { get; set; }
         
         private Action<ICollider> _onDestroyAction;
+        private void Start()
+        {
+            
+        }
 
         public void OnDrawGizmos()
         {
             Gizmos.color = gizmoColor;
-            Gizmos.DrawWireSphere(transform.position, radius);
+            Gizmos.DrawWireCube(transform.position, size);
         }
 
         public void RegisterOnHitDetected(Action action)
@@ -51,6 +56,7 @@ namespace SakeShooterSystems{
         {
             _onDestroyAction?.Invoke(this);
         }
+
         
         public void InvokeOnHitDetected()
         {
