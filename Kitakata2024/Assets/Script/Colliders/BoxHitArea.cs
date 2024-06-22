@@ -21,10 +21,6 @@ namespace SakeShooterSystems
         public int ColliderID { get; set; }
         
         private Action<ICollider> _onDestroyAction;
-        private void Start()
-        {
-            
-        }
 
         public void OnDrawGizmos()
         {

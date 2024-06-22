@@ -52,7 +52,6 @@ namespace SakeShooterSystems
         public void RemoveBulletCollider(ICollider col)
         {
             _bulletColldiers.Remove(col);
-            Debug.Log("removed bullet collider: " + col.ColliderID);
         }
   
 

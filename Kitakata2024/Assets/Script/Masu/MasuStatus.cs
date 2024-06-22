@@ -72,7 +72,7 @@ namespace SakeShooter
 
         private void Start()
         {
-            Initialize(); //pcl
+            //Initialize(); //pcl
             Debug.Log(_currentAmount);
         }
         

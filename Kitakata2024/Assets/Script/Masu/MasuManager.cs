@@ -44,7 +44,6 @@ namespace SakeShooter
       
         void OnDrawGizmos()
         {
-            // Draw a yellow line from the origin of the object in the direction of masuMoveDirection
             Debug.DrawRay(transform.position, masuMoveDirection, Color.yellow);
         }
         
