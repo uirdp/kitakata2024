@@ -1,10 +1,6 @@
 using UnityEngine;
 
-enum MasuExitStatus
-{
-    Success,
-    Failure,
-}
+
 // ラッパークラスMasuをつくって、statusとmoveをもたせる
 namespace SakeShooter
 {

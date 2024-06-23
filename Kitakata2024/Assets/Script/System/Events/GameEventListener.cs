@@ -1,24 +1,27 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class GameEventListener : MonoBehaviour
+namespace SakeShooterSystems
 {
-    public GameEvent Event;
-
-    public UnityEvent Response;
-
-    private void OnEnable()
+    public class GameEventListener : MonoBehaviour
     {
-        Event.RegisterListener(this);
-    }
+        public GameEvent Event;
 
-    private void OnDisable()
-    {
-        Event.UnregisterListener(this);
-    }
+        public UnityEvent<MasuExitStatus> Response;
 
-    public void OnEventRaised()
-    {
-        Response.Invoke();
+        private void OnEnable()
+        {
+            Event.RegisterListener(this);
+        }
+
+        private void OnDisable()
+        {
+            Event.UnregisterListener(this);
+        }
+
+        public void OnEventRaised(MasuExitStatus status)
+        {
+            Response.Invoke(status);
+        }
     }
 }
