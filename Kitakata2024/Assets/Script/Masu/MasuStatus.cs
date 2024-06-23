@@ -10,6 +10,7 @@ namespace SakeShooter
         [SerializeField] public SakeShooterSystems.BoxHitArea MasuCollider;
         
         public int ShaderPropertyID { get; set; }
+        public MasuManager ManagerReference { get; set; }
 
         private float _initialCapacity;
         private float _currentAmount;

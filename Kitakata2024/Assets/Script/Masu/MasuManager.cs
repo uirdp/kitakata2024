@@ -1,9 +1,10 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
+enum MasuExitStatus
+{
+    Success,
+    Failure,
+}
 // ラッパークラスMasuをつくって、statusとmoveをもたせる
 namespace SakeShooter
 {
@@ -23,7 +24,7 @@ namespace SakeShooter
         {
             if(Input.GetKeyDown("space"))
             {
-                SpawnMasu(transform.position, 0.0f, 1.0f);
+                SpawnMasu(transform.position, 1.0f, 1.0f);
             }   
         }
 
