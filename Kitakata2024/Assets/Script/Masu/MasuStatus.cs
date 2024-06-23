@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using SakeShooterSystems;
 
 namespace SakeShooter
 {
@@ -12,6 +13,9 @@ namespace SakeShooter
         public int ShaderPropertyID { get; set; }
         public MasuManager ManagerReference { get; set; }
 
+        [SerializeField, Header("------ マス消滅時のイベント ------")]
+        private GameEvent masuExitEvent = null;
+        
         private float _initialCapacity;
         private float _currentAmount;
         
@@ -37,6 +41,8 @@ namespace SakeShooter
             
             //ShaderPropertyID = Shader.PropertyToID("_Fill");
             // Shaderのプロパティ（Fill)をセットする
+            
+            // materialの取得は思いので、プールでやろう
             _material = Fluid.GetComponent<Renderer>().material;
             ShaderPropertyID = Shader.PropertyToID("_Fill");
             _material.SetFloat(ShaderPropertyID, _currentAmount);
@@ -49,12 +55,11 @@ namespace SakeShooter
             _currentAmount += amount / _initialCapacity;
            
             _material.SetFloat(ShaderPropertyID, _currentAmount);
-            Debug.Log("fill!");
         }
 
         private void FullEvent()
         {
-            Debug.Log("Full!");
+            masuExitEvent.Raise(MasuExitStatus.Success);
         }
       
         
@@ -71,11 +76,15 @@ namespace SakeShooter
             }
         }
 
-        private void Start()
+        private void Update()
         {
-            //Initialize(); //pcl
-            Debug.Log(_currentAmount);
+            if (Input.GetKeyDown(KeyCode.I))
+            {
+                Initialize();
+            }
         }
+        
+        
         
     }
 }

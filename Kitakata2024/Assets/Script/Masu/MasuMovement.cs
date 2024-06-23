@@ -31,7 +31,6 @@ namespace SakeShooter
 
         private void Move()
         {
-            Debug.Log(this.transform.position);
             transform.position += -Vector3.forward * _speed * Time.deltaTime;
         }
     }
