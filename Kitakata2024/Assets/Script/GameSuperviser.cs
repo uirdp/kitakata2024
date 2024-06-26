@@ -10,10 +10,10 @@ public class GameSuperviser : MonoBehaviour
         switch (status)
         {
             case MasuExitStatus.Success:
-                Debug.Log("Masu Exit Success");
+                Debug.Log("SV: Masu Exit Success");
                 break;
             case MasuExitStatus.Failure:
-                Debug.Log("Masu Exit Failure");
+                Debug.Log("SV: Masu Exit Failure");
                 break;
         }
     }

@@ -1,4 +1,5 @@
 using System;
+using SakeShooterSystems;
 using UnityEngine;
 
 namespace SakeShooter
@@ -7,38 +8,35 @@ namespace SakeShooter
     {
         [Tooltip("升が消えるまでの初期位置からの距離")]
         public float DistanceThreshold = 100.0f;
+
+        public MasuResult resultManager;
         
+        // ここらへんのはgetcomponetする変わりに持たせているだけ
         [SerializeField] private MasuStatus _status;
         [SerializeField] private MasuMovement _movement;
-        private event Action<Masu> _outOfRangeAction;
+        [SerializeField] private BoxHitArea _collider;
+        [SerializeField] private MasuResult _result;
+        
         private Vector3 _initialPosition;
         
         
         public MasuStatus Status => _status;
         public MasuMovement Movement => _movement;
-        
-        public void RegisterOutOfRangeAction(Action<Masu> action)
-        {
-            _outOfRangeAction += action;
-        }
-        
-        private void UnRegisterOutOfRangeAction()
-        {
-            _outOfRangeAction = null;
-        }
-        
-        private void OnDestroy()
-        {
-            UnRegisterOutOfRangeAction();
-        }
+        public MasuResult Result => _result;
+        public BoxHitArea Collider => _collider;
         
         private void CheckDistanceAndReturnToPool()
         {
             float distance = Vector3.Distance(transform.position, _initialPosition);
             if (distance > DistanceThreshold)
             {
-                _outOfRangeAction?.Invoke(this);
+                resultManager.RaiseFailureEvent();
             }
+        }
+
+        private void Update()
+        {
+            CheckDistanceAndReturnToPool();   
         }
     }
 }

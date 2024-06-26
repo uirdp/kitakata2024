@@ -30,19 +30,19 @@ namespace SakeShooter
         {
             var masuGo = Instantiate(masuPrefab);
             var masu = masuGo.GetComponent<Masu>();
-            var col = masuGo.GetComponent<BoxHitArea>();
-            
-            
-            var masuStatus = masu.Status;
-            
-            // Shaderに渡すプロパティのIDを取得
-            masuStatus.ShaderPropertyID = _shaderPropertyID;
-            // 升が画面外に出た時の処理を登録
-            masu.RegisterOutOfRangeAction(ReturnToPool);
+         
+            var col = masu.Collider;
             // 衝突判定システムにコライダーを追加
             collisionDetectionSystem.AddColliderToList(col);
+            //　衝突判定システムに、オブジェクト破壊時コライダーをリストから除外するように登録
+            col.RegisterOnDestroyAction(collisionDetectionSystem.RemoveMasuCollider);
             
-            Debug.Log(col.Size.size);
+            var masuStatus = masu.Status;
+            // Shaderに渡すプロパティのIDを取得
+            masuStatus.ShaderPropertyID = _shaderPropertyID;
+            
+            var res = masu.Result;
+            res.RegisterOnExitAction(ReturnToPool);
             
             masuGo.SetActive(false);
 

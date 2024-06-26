@@ -53,7 +53,11 @@ namespace SakeShooterSystems
         {
             _bulletColldiers.Remove(col);
         }
-  
+
+        public void RemoveMasuCollider(ICollider col)
+        {
+            _masuColliders.Remove(col);
+        }
 
         private async UniTaskVoid RemoveFromDetectedCollisionsAfterDelay(ICollider col)
         {
