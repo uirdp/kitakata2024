@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using SakeShooterSystems;
 using UnityEngine;
 
@@ -23,12 +24,12 @@ namespace SakeShooter
         public MasuResult Result => _result;
         public BoxHitArea Collider => _collider;
         
-        private void CheckDistanceAndReturnToPool()
+        private async UniTaskVoid CheckDistanceAndReturnToPool()
         {
             float distance = Vector3.Distance(transform.position, _initialPosition);
             if (distance > DistanceThreshold)
             {
-                resultManager.RaiseFailureEvent();
+                await resultManager.RaiseFailureEvent();
             }
         }
 

@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using SakeShooterSystems;
 using System;
+using Cysharp.Threading.Tasks;
+
 
 namespace SakeShooter
 {
@@ -14,16 +16,18 @@ namespace SakeShooter
         
         private Action<Masu> _onExitAction;
 
-        public void RaiseSuccessEvent()
+        public UniTask RaiseSuccessEvent()
         {
             _onExitAction?.Invoke(masu);
             masuExitEvent.Raise(MasuExitStatus.Success);
+            return UniTask.CompletedTask;
         }
 
-        public void RaiseFailureEvent()
+        public UniTask RaiseFailureEvent()
         {
             masuExitEvent.Raise(MasuExitStatus.Failure);
             _onExitAction?.Invoke(masu);
+            return UniTask.CompletedTask;
         }
         
         public void RegisterOnExitAction(Action<Masu> action)

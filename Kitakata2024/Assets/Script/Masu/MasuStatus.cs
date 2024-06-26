@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
 using SakeShooterSystems;
+using Cysharp.Threading.Tasks;
+using System.Threading.Tasks;
 
 namespace SakeShooter
 {
@@ -46,12 +48,11 @@ namespace SakeShooter
             _currentAmount += amount / _initialCapacity;
             // シェーダーの値を更新
             _material.SetFloat(ShaderPropertyID, _currentAmount);
-            Debug.Log("Fill");
         }
 
-        private void FullEvent()
+        private async UniTaskVoid FullEvent()
         {
-            resultManager.RaiseSuccessEvent();
+            await resultManager.RaiseSuccessEvent();
         }
       
         

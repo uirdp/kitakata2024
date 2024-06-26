@@ -88,7 +88,6 @@ namespace SakeShooterSystems
                     ICollider bcol = _bulletColldiers[j];
                     if (ReferenceEquals(bcol, null))
                     {
-                        Debug.Log("its null!");
                         _bulletColldiers.RemoveAt(j);
                         continue;
                     }
@@ -97,7 +96,6 @@ namespace SakeShooterSystems
                     
                     if (ReferenceEquals(bgo, null))
                     {
-                        Debug.Log("its null!");
                         _bulletColldiers.RemoveAt(j);
                         continue;
                     }
