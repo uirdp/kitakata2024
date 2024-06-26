@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.Design;
 using UnityEngine;
 using SakeShooterSystems;
 using Cysharp.Threading.Tasks;
@@ -12,6 +13,7 @@ namespace SakeShooter
         public GameObject Fluid;
         [SerializeField] public SakeShooterSystems.BoxHitArea MasuCollider;
         public MasuResult resultManager;
+        public Vector3 GoalPosition;
         
         public int ShaderPropertyID { get; set; }
         
@@ -55,7 +57,7 @@ namespace SakeShooter
             await resultManager.RaiseSuccessEvent();
         }
       
-        
+        // なまえよくないとおもう
         private void InvokeOnFill()
         {
             if(_currentAmount <= _capacity)
@@ -68,12 +70,27 @@ namespace SakeShooter
             }
         }
 
+        private void CheckPosition()
+        {
+            Vector3 forward = transform.TransformDirection(Vector3.forward);
+            Vector3 toGoal = GoalPosition - transform.position;
+            
+            
+            //Debug.Log(Vector3.Dot(forward, toGoal));
+            if (Vector3.Dot(-forward, toGoal) < 0)
+            {
+                Debug.Log("Goal");
+            }
+        }
+
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.I))
             {
                 Initialize();
             }
+            
+            CheckPosition();
         }
         
         

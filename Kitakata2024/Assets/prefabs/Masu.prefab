@@ -126,6 +126,7 @@ MonoBehaviour:
   Fluid: {fileID: 3537679943062885896}
   MasuCollider: {fileID: 3722511583450118165}
   resultManager: {fileID: 214306316241794721}
+  GoalPosition: {x: -5.961205, y: -5.729, z: 4.737991}
 --- !u!114 &3722511583450118165
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153,7 +154,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DistanceThreshold: 100
-  resultManager: {fileID: 0}
   _status: {fileID: 8768601134215677954}
   _movement: {fileID: 5838224508550671903}
   _collider: {fileID: 3722511583450118165}

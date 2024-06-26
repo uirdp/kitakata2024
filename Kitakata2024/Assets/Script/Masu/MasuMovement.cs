@@ -21,7 +21,6 @@ namespace SakeShooter
             _direction = direction;
             
             this.transform.position = initialPosition;
-            Debug.Log(initialPosition);
         }
 
         private void Update()

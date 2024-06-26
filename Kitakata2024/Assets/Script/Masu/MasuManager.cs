@@ -29,7 +29,7 @@ namespace SakeShooter
         {
             if(Input.GetKeyDown("space"))
             {
-                SpawnMasu(SetSpawnPoint(), 1.0f, 1.0f);
+                SpawnMasu(SetSpawnPoint(), 5.0f, 1.0f);
             }   
         }
         

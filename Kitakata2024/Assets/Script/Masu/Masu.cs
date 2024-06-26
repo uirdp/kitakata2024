@@ -9,8 +9,6 @@ namespace SakeShooter
     {
         [Tooltip("升が消えるまでの初期位置からの距離")]
         public float DistanceThreshold = 100.0f;
-
-        public MasuResult resultManager;
         
         // ここらへんのはgetcomponetする変わりに持たせているだけ
         [SerializeField] private MasuStatus _status;
@@ -29,7 +27,7 @@ namespace SakeShooter
             float distance = Vector3.Distance(transform.position, _initialPosition);
             if (distance > DistanceThreshold)
             {
-                await resultManager.RaiseFailureEvent();
+                await _result.RaiseFailureEvent();
             }
         }
 
