@@ -18,8 +18,6 @@ namespace SakeShooter
         [SerializeField] private MasuResult _result;
         
         private Vector3 _initialPosition;
-        
-        
         public MasuStatus Status => _status;
         public MasuMovement Movement => _movement;
         public MasuResult Result => _result;

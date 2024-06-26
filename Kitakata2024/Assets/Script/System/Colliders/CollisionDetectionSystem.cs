@@ -109,6 +109,7 @@ namespace SakeShooterSystems
                     {
                         if(!_collidersWithDetectedCollision.Contains(bcol))
                         {
+                            //Debug.Log("hit!");
                             //is this a callback hell?
                             mcol.InvokeOnHitDetected();
                             //Hitした判定をつける

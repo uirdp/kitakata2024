@@ -20,6 +20,12 @@ namespace SakeShooter
         private Vector3 _initialPosition;
 
         private Material _material;
+
+        public void Start()
+        {
+            MasuCollider.RegisterOnHitDetected(InvokeOnFill);
+        }
+
         public void Initialize(float capacity = 100.0f)
         {
             // 容量と現在の量を、[-1, 1]の範囲に正規化する -> Shaderに渡すため (FluidのShaderのFillプロパティに渡す)
@@ -32,17 +38,15 @@ namespace SakeShooter
             // Shaderのプロパティ（Fill)をセットする
             // materialの取得は思いので、プールでやろう
             _material = Fluid.GetComponent<Renderer>().material;
-            ShaderPropertyID = Shader.PropertyToID("_Fill");
             _material.SetFloat(ShaderPropertyID, _currentAmount);
-            
-            MasuCollider.RegisterOnHitDetected(InvokeOnFill);
         }
     
         private void Fill(float amount)
         {
             _currentAmount += amount / _initialCapacity;
-           
+            // シェーダーの値を更新
             _material.SetFloat(ShaderPropertyID, _currentAmount);
+            Debug.Log("Fill");
         }
 
         private void FullEvent()

@@ -16,8 +16,8 @@ namespace SakeShooter
 
         public void RaiseSuccessEvent()
         {
-            masuExitEvent.Raise(MasuExitStatus.Success);
             _onExitAction?.Invoke(masu);
+            masuExitEvent.Raise(MasuExitStatus.Success);
         }
 
         public void RaiseFailureEvent()
