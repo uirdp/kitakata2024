@@ -10,10 +10,16 @@ namespace SakeShooter
     // 名前をMasuに変えた方がいいかも？
     public class MasuStatus : MonoBehaviour
     {
-        public GameObject Fluid;
-        [SerializeField] public SakeShooterSystems.BoxHitArea MasuCollider;
+        public GameObject fluid;
+        [SerializeField] public SakeShooterSystems.BoxHitArea masuCollider;
         public MasuResult resultManager;
-        public Vector3 GoalPosition;
+        public Vector3 goalPosition;
+        
+        public Transform fluidTransform;
+        [Tooltip("お酒の最大の高さ")]
+        public float fluidMinHeight;
+        public float fluidMaxHeight;
+        
         
         public int ShaderPropertyID { get; set; }
         
@@ -25,36 +31,46 @@ namespace SakeShooter
 
         private Material _material;
 
+        private MasuExitStatus _currentStatus = MasuExitStatus.Failure;
+
         public void Start()
         {
-            MasuCollider.RegisterOnHitDetected(InvokeOnFill);
+            masuCollider.RegisterOnHitDetected(InvokeOnFill);
         }
 
         public void Initialize(float capacity = 100.0f)
         {
-            // 容量と現在の量を、[-1, 1]の範囲に正規化する -> Shaderに渡すため (FluidのShaderのFillプロパティに渡す)
-            _currentAmount = -1f;
+            _currentAmount = 0f;
             _capacity = capacity;
-            _initialCapacity = _capacity;
             
-            _capacity /= _capacity;
+            _initialCapacity = capacity;
+            _capacity /= capacity; // [0, 1]に正規化
             
+            Vector3 position = fluidTransform.position;
+            position.y = fluidMinHeight;
+            fluid.transform.position = position;
+            
+            // ちょっとよくわからんなった
             // Shaderのプロパティ（Fill)をセットする
             // materialの取得は思いので、プールでやろう
-            _material = Fluid.GetComponent<Renderer>().material;
-            _material.SetFloat(ShaderPropertyID, _currentAmount);
+            //_material = fluid.GetComponent<Renderer>().material;
+            //_material.SetFloat(ShaderPropertyID, _currentAmount);
         }
     
         private void Fill(float amount)
         {
             _currentAmount += amount / _initialCapacity;
             // シェーダーの値を更新
-            _material.SetFloat(ShaderPropertyID, _currentAmount);
+            //_material.SetFloat(ShaderPropertyID, _currentAmount);
+            
+            Vector3 position = fluidTransform.position;
+            position.y = Mathf.Lerp(fluidMinHeight, fluidMaxHeight, _currentAmount);
+            fluidTransform.position = position;
         }
 
-        private async UniTaskVoid FullEvent()
+        private void Full()
         {
-            await resultManager.RaiseSuccessEvent();
+            _currentStatus = MasuExitStatus.Success;
         }
       
         // なまえよくないとおもう
@@ -66,20 +82,18 @@ namespace SakeShooter
             }
             else
             {
-                FullEvent();
+                Full();
             }
         }
 
-        private void CheckPosition()
+        private async void CheckPosition()
         {
             Vector3 forward = transform.TransformDirection(Vector3.forward);
-            Vector3 toGoal = GoalPosition - transform.position;
+            Vector3 toGoal = goalPosition - transform.position;
             
-            
-            //Debug.Log(Vector3.Dot(forward, toGoal));
             if (Vector3.Dot(-forward, toGoal) < 0)
             {
-                Debug.Log("Goal");
+                await resultManager.RaiseResultEvent(_currentStatus);
             }
         }
 
@@ -91,6 +105,7 @@ namespace SakeShooter
             }
             
             CheckPosition();
+            Debug.Log(_currentAmount);
         }
         
         

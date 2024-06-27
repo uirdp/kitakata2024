@@ -2,6 +2,7 @@ using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Random = UnityEngine.Random;
 
 namespace SakeShooter
 {
@@ -9,17 +10,18 @@ namespace SakeShooter
     {
         [Header("------ Game Objects------")] public GameObject player;
         public BulletObjectPool bulletObjectPool;
+        public UIController ui;
 
         [Header("------ Parameter Settings ------")] [Tooltip("The time between each shot")]
         public float fireInterval = 0.05f;
         [Tooltip("リロード（補充にかかる時間、小さいほど早くたまる")]
-        public float reloadInterval = 0.05f;
+        public float reloadInterval = 10.0f;
 
         [SerializeField, Tooltip("打てる酒の量")] 
         private float _capacity = 30.0f;
         
         [SerializeField, Tooltip("マスに溜まる量")]
-        private float _fillAmout = 10.0f;
+        private float _fillAmount = 1.0f;
 
         private float _currentAmount = 30.0f;
 
@@ -28,11 +30,11 @@ namespace SakeShooter
         
         // ここらの管理はビット演算を使ったほうがいいかもしれない（一つのみ1になるように) 
         private bool _canFire = true;
-        private bool _canReload = true;
+        private bool _canRefill = true;
         private SakeShooterInputs _input;
 
         private const uint NumOfStates = 2;
-        private bool[] _currentState = new bool[NumOfStates];
+        private States _currentState = States.None;
 
         private enum States
         {
@@ -53,28 +55,40 @@ namespace SakeShooter
             Ray ray = new Ray(this.transform.position, this.transform.forward);
             Debug.DrawRay(this.transform.position, ray.direction * 10, Color.red);
             
-            if (_canFire) Fire();
+            ChangeState();
+            
+            if (_canFire && _currentState == States.Fire) Fire();
+            if (_canRefill && _currentState == States.Fill) RefillBottle();
         }
 
         private async void RefillBottle()
         {
-            if (_currentAmount >= _capacity) _currentAmount = _capacity;
-            _currentAmount += _fillAmout;
-            // update UI
-
-            await UniTask.Delay(TimeSpan.FromSeconds(reloadInterval));
+            if (_input.refill)
+            {
+                _canRefill = false;
+                _currentAmount += _fillAmount;
+                if (_currentAmount >= _capacity) _currentAmount = _capacity;
+                
+                ui.UpdateSakeAmount(_currentAmount);
+                await UniTask.Delay(TimeSpan.FromSeconds(reloadInterval));
+                _canRefill = true;
+            }
         }
 
-        private void ChangeState(bool currentState)
+        // 状態管理クラスを別に作ってもいいかも、あともっと簡素な書き方ができる気がする
+        private void ChangeState()
         {
+            if (_input.fire) _currentState = States.Fire;
+            if (_input.refill) _currentState = States.Fill;
             
+            // もしどのボタンも押されていなければ... もっといい書き方あるかも
+            if (!_input.refill && !_input.fire) _currentState = States.None;
         }
 
         private async void Fire()
         {
             if (_input.fire && _currentAmount > 0)
             {
-                Debug.Log("fire");
                 _canFire = false;
 
                 var bullet = bulletObjectPool.GetBullet();
@@ -84,6 +98,7 @@ namespace SakeShooter
                 _canFire = true;
 
                 _currentAmount -= OneShotAmount;
+                ui.UpdateSakeAmount(_currentAmount);
             }
         }
     }

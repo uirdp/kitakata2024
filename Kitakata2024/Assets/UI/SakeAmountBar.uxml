@@ -1,0 +1,3 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:ProgressBar value="0" high-value="100" name="SakeAmount" style="justify-content: space-between; flex-direction: column-reverse; opacity: 0.82; height: 456px; align-items: stretch; align-self: center; -unity-background-image-tint-color: rgb(54, 161, 192); background-color: rgba(81, 140, 178, 0); width: 180px;" />
+</ui:UXML>
