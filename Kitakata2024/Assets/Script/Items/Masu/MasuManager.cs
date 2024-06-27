@@ -29,13 +29,14 @@ namespace SakeShooter
         {
             if(Input.GetKeyDown("space"))
             {
-                SpawnMasu(SetSpawnPoint(), 5.0f, 1.0f);
+                SpawnMasu(SetSpawnPoint(), 2.0f, 1.0f);
             }   
         }
         
         private Vector3 SetSpawnPoint()
         {
-            return Vector3.Lerp(masuSpawnPoint_start.position, masuSpawnPoint_end.position, UnityEngine.Random.Range(0.0f, 1.0f));
+            return Vector3.Lerp(masuSpawnPoint_start.position, 
+                masuSpawnPoint_end.position, UnityEngine.Random.Range(0.0f, 1.0f));
         }
 
         private void SpawnMasu(Vector3 position, float speed, float acceleration)
@@ -53,34 +54,10 @@ namespace SakeShooter
             masuMoveDirection.Normalize();
         }
         
-        /*private void CreateNormal()
-        {
-            Vector3 origin = Vector3.zero - masuMoveDirection;
-            
-            float dx = origin.x / origin.z;
-            float dz = origin.z / origin.x;
-            
-            _normalStart = new Vector3(origin.z + (dx * d), origin.y, 
-                                    -origin.x + (dz * d));
-            
-            _normalEnd = new Vector3(-origin.z + (-dx * d), origin.y, 
-                origin.x + (dz * d));
-            
-        }*/
-        
-
-        private void DrawLine()
-        {
-            LineRenderer lineRenderer = GetComponent<LineRenderer>();
-            
-            lineRenderer.SetPosition(0, _normalStart);
-            lineRenderer.SetPosition(1, _normalEnd);
-        }
 
         void OnDrawGizmos()
         {
             Debug.DrawRay(transform.position, masuMoveDirection, Color.yellow);
-            //DrawLine();
         }
         
         

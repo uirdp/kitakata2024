@@ -13,9 +13,10 @@ namespace SakeShooter
         private GameEvent masuExitEvent = null;
 
         [SerializeField] private Masu masu = null;
+        public Vector3 goalPosition;
         
         private Action<Masu> _onExitAction;
-
+        
         public UniTask RaiseSuccessEvent()
         {
             _onExitAction?.Invoke(masu);
@@ -29,7 +30,14 @@ namespace SakeShooter
             _onExitAction?.Invoke(masu);
             return UniTask.CompletedTask;
         }
-        
+
+        public UniTask RaiseResultEvent(MasuExitStatus status)
+        {
+            _onExitAction?.Invoke(masu);
+            masuExitEvent.Raise(status);
+            
+            return UniTask.CompletedTask;
+        }
         public void RegisterOnExitAction(Action<Masu> action)
         {
             _onExitAction += action;

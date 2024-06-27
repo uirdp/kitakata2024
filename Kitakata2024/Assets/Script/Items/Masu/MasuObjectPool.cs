@@ -66,6 +66,7 @@ namespace SakeShooter
         
         private void ReturnToPool(Masu masu)
         {
+            Debug.Log("here");
             _masuPool.Release(masu);
         }
         
