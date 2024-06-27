@@ -7,9 +7,9 @@
             "actions": [
                 {
                     "name": "Move",
-                    "type": "Value",
+                    "type": "Button",
                     "id": "6bc1aaf4-b110-4ff7-891e-5b9fe6f32c4d",
-                    "expectedControlType": "Vector2",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -47,7 +47,16 @@
                     "id": "b42d49b8-5d51-491c-bedd-d03497fb8ece",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Hold",
+                    "interactions": "Hold(duration=0.1,pressPoint=1.401298E-45)",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Refill",
+                    "type": "Value",
+                    "id": "263ebc65-53d9-4be6-9624-a55a5c44f1f6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
                     "initialStateCheck": true
                 }
             ],
@@ -236,6 +245,17 @@
                     "processors": "",
                     "groups": "KeyboardMouse",
                     "action": "Fire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c14c5e21-dd6b-4af0-8a8b-f79cdcb57aad",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "Refill",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

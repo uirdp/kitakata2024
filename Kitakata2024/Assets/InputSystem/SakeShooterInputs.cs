@@ -13,6 +13,7 @@ namespace SakeShooter
         public bool jump;
         public bool sprint;
         public bool fire;
+        public bool refill;
 
         [Header("Movement Settings")]
         public bool analogMovement;
@@ -49,6 +50,11 @@ namespace SakeShooter
         {
             FireInput(value.isPressed);
         }
+
+        public void OnRefill(InputValue value)
+        {
+            RefillInput(value.isPressed);
+        }
 #endif
 
 
@@ -75,6 +81,11 @@ namespace SakeShooter
         public void FireInput(bool newFireState)
         {
             fire = newFireState;
+        }
+
+        public void RefillInput(bool newRefillState)
+        {
+            refill = newRefillState;
         }
 		
         private void OnApplicationFocus(bool hasFocus)
