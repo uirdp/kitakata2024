@@ -78,7 +78,7 @@ namespace SakeShooter
         {
             if(_currentAmount <= _capacity)
             {
-                Fill(10.0f);
+                Fill(6.0f);
             }
             else
             {
@@ -99,13 +99,7 @@ namespace SakeShooter
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.I))
-            {
-                Initialize();
-            }
-            
             CheckPosition();
-            Debug.Log(_currentAmount);
         }
         
         

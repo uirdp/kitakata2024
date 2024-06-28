@@ -21,19 +21,6 @@ namespace SakeShooter
         public MasuMovement Movement => _movement;
         public MasuResult Result => _result;
         public BoxHitArea Collider => _collider;
-        
-        private async UniTaskVoid CheckDistanceAndReturnToPool()
-        {
-            float distance = Vector3.Distance(transform.position, _initialPosition);
-            if (distance > DistanceThreshold)
-            {
-                await _result.RaiseFailureEvent();
-            }
-        }
-
-        private void Update()
-        {
-            CheckDistanceAndReturnToPool();   
-        }
+  
     }
 }

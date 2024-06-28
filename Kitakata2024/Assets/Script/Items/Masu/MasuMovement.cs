@@ -30,6 +30,7 @@ namespace SakeShooter
 
         private void Move()
         {
+            _speed += _acceleration * Time.deltaTime;
             transform.position += -Vector3.forward * _speed * Time.deltaTime;
         }
     }
