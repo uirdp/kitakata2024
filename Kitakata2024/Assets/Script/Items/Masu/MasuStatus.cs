@@ -20,7 +20,6 @@ namespace SakeShooter
         public float fluidMinHeight;
         public float fluidMaxHeight;
         
-        
         public int ShaderPropertyID { get; set; }
         
         private float _initialCapacity;
@@ -40,6 +39,8 @@ namespace SakeShooter
 
         public void Initialize(float capacity = 100.0f)
         {
+            _currentStatus = MasuExitStatus.Failure;
+            
             _currentAmount = 0f;
             _capacity = capacity;
             
@@ -49,19 +50,12 @@ namespace SakeShooter
             Vector3 position = fluidTransform.position;
             position.y = fluidMinHeight;
             fluid.transform.position = position;
-            
-            // ちょっとよくわからんなった
-            // Shaderのプロパティ（Fill)をセットする
-            // materialの取得は思いので、プールでやろう
-            //_material = fluid.GetComponent<Renderer>().material;
-            //_material.SetFloat(ShaderPropertyID, _currentAmount);
+
         }
     
         private void Fill(float amount)
         {
             _currentAmount += amount / _initialCapacity;
-            // シェーダーの値を更新
-            //_material.SetFloat(ShaderPropertyID, _currentAmount);
             
             Vector3 position = fluidTransform.position;
             position.y = Mathf.Lerp(fluidMinHeight, fluidMaxHeight, _currentAmount);

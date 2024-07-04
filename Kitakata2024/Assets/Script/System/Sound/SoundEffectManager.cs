@@ -13,6 +13,7 @@ namespace SakeShooterSystems{
         private void Start()
         {
             _audioSource = GetComponent<AudioSource>();
+            _audioSource.volume = 0.02f;
         }
         
         private void PlaySuccessSound()

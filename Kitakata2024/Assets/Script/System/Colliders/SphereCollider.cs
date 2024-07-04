@@ -50,6 +50,7 @@ namespace SakeShooterSystems{
         private void OnDestroy()
         {
             _onDestroyAction?.Invoke(this);
+            UnregisterOnDestroyAction();
         }
         
         public void InvokeOnHitDetected()

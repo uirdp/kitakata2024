@@ -18,24 +18,32 @@ namespace SakeShooter
         [Tooltip("升が流れる方向を指定")]
         public Vector3 masuMoveDirection;
         
+        [Header("------ 升の速度と加速度 ------")]
+        public float masuSpeed = 2.0f;
+        public float masuAcceleration = 1.03f;
+        
         // structでもいいかも
         private Vector3 _normalStart;
         private Vector3 _normalEnd;
         
-        [SerializeField, Header("------ 升の生成間隔の上限と加減 ------")]
-        public float _MaxWaitTime = 7.0f;
-        public float _MinWaitTime = 0.5f;
+        private float _maxWaitTime = 4.0f;
+        private float _minWaitTime = 0.5f;
         private bool _canSpawn = false;
-
-
-        public void GameStart()
+        
+        public void StartSpawning()
         {
             _canSpawn = true;
         }
 
-        public void GameEnd()
+        public void EndSpawning()
         {
             _canSpawn = false;
+        }
+        
+        public void ChangeSpawnRate(float max, float min)
+        {
+            _maxWaitTime = max;
+            _minWaitTime = min;
         }
         private void Start()
         {
@@ -43,15 +51,16 @@ namespace SakeShooter
         }
         private void Update()
         {
-            if(_canSpawn) SpawnMasuByTime(SetSpawnPoint(), 3.5f, 1.05f);
+            if(_canSpawn) SpawnMasuByTime(SetSpawnPoint(), masuSpeed, masuAcceleration);
         }
-        
+
+       
         private async void SpawnMasuByTime(Vector3 position, float speed, float acceleration)
         {
             SpawnMasu(position, speed, acceleration);
             _canSpawn = false;
             
-            var waitTime = UnityEngine.Random.Range(_MinWaitTime, _MaxWaitTime);
+            var waitTime = UnityEngine.Random.Range(_minWaitTime, _maxWaitTime);
        
             await UniTask.Delay(TimeSpan.FromSeconds(waitTime));
             _canSpawn = true;

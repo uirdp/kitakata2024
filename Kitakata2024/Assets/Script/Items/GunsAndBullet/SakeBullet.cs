@@ -1,14 +1,19 @@
 using System;
 using UnityEngine;
+using SphereCollider = SakeShooterSystems.SphereCollider;
 
 namespace SakeShooter
 {
     public class SakeBullet : MonoBehaviour
     {
         [Header("------ Parameters ------")]
-        public float speed = 4.5f;
+        public float speed = 6.5f;
         public float gravity = 0.8f;
-        public float distanceThreshold = 10.0f;
+        public float distanceThreshold = 20.0f;
+        [Header("大きくすると玉がより下に飛ぶように")]
+        public float directionOffset = 0.5f;
+
+        public SakeShooterSystems.SphereCollider collider;
 
         private Vector3 _direction;
         private Vector3 _initialPosition;
@@ -21,6 +26,10 @@ namespace SakeShooter
             set;
         }
 
+        private void Start()
+        {
+            collider.RegisterOnHitDetected(ReturnToPool);
+        }
         private void Update()
         {
             Move();
@@ -34,13 +43,17 @@ namespace SakeShooter
             this.transform.position += _direction * speed * Time.deltaTime;
         }
         
+        private void ReturnToPool()
+        {
+            _outOfRangeAction?.Invoke(this);
+        }
         // Check if the bullet is out of range, if so, return to pool
         private void CheckDistanceAndReturnToPool()
         {
             float distance = Vector3.Distance(transform.position, _initialPosition);
             if (distance > distanceThreshold)
             {
-               _outOfRangeAction?.Invoke(this);
+              ReturnToPool();
             }
         }
         
@@ -61,6 +74,7 @@ namespace SakeShooter
         public void Initialize(Vector3 position, Vector3 direction)
         {
             this.transform.position = position;
+            direction.y -= directionOffset;
             this.transform.forward = direction;
             
             _initialPosition = position;

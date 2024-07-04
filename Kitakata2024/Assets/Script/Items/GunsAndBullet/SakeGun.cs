@@ -13,17 +13,17 @@ namespace SakeShooter
         public UIController ui;
 
         [Header("------ Parameter Settings ------")] [Tooltip("The time between each shot")]
-        public float fireInterval = 0.05f;
+        public float fireInterval = 0.02f;
         [Tooltip("リロード（補充にかかる時間、小さいほど早くたまる")]
-        public float reloadInterval = 10.0f;
+        public float reloadInterval = 5.0f;
 
         [SerializeField, Tooltip("打てる酒の量")] 
-        private float _capacity = 30.0f;
+        private float _capacity = 50.0f;
         
         [SerializeField, Tooltip("マスに溜まる量")]
-        private float _fillAmount = 1.0f;
+        private float _fillAmount = 2.0f;
 
-        private float _currentAmount = 30.0f;
+        private float _currentAmount = 50.0f;
 
         // 一度の発火で減る量
         private const float OneShotAmount = 1.0f;
