@@ -1,9 +1,6 @@
-using System;
-using System.ComponentModel.Design;
 using UnityEngine;
 using SakeShooterSystems;
-using Cysharp.Threading.Tasks;
-using System.Threading.Tasks;
+using MoreMountains.Feedbacks;
 
 namespace SakeShooter
 {
@@ -11,12 +8,14 @@ namespace SakeShooter
     public class MasuStatus : MonoBehaviour
     {
         public GameObject fluid;
-        [SerializeField] public SakeShooterSystems.BoxHitArea masuCollider;
+        [SerializeField] public BoxHitArea masuCollider;
         public MasuResult resultManager;
+        public MMF_Player successFeedback;
+        
         public Vector3 goalPosition;
         
         public Transform fluidTransform;
-        [Tooltip("お酒の最大の高さ")]
+        [Tooltip("お酒の高さ-------------")]
         public float fluidMinHeight;
         public float fluidMaxHeight;
         
@@ -80,19 +79,41 @@ namespace SakeShooter
             }
         }
 
-        private async void CheckPosition()
+        private void PlayFeedback()
+        {
+            switch (_currentStatus)
+            {
+                case MasuExitStatus.Success:
+                    successFeedback.PlayFeedbacks();
+                    break;
+                
+                case MasuExitStatus.Failure:
+                    Debug.Log("Failure");
+                    break;
+            }
+        }
+        // MMF_Playerから呼ばれます
+        public async void RaiseResultEvent()
+        {
+            await resultManager.RaiseResultEvent(_currentStatus);
+        }
+        private void CheckPosition()
         {
             Vector3 forward = transform.TransformDirection(Vector3.forward);
             Vector3 toGoal = goalPosition - transform.position;
             
             if (Vector3.Dot(-forward, toGoal) < 0)
             {
-                await resultManager.RaiseResultEvent(_currentStatus);
+               PlayFeedback();
             }
         }
 
         private void Update()
         {
+            if (Input.GetKeyDown(KeyCode.I))
+            {
+                Initialize();
+            }
             CheckPosition();
         }
         

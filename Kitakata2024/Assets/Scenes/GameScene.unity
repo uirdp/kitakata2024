@@ -189,6 +189,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: masu_fin
       objectReference: {fileID: 0}
+    - target: {fileID: 1092476314905848038, guid: 5263d2cc7a4a10c448a9001ef05052a9,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -292,7 +297,19 @@ MonoBehaviour:
         m_Calls: []
     OnComplete:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 19986936}
+          m_TargetAssemblyTypeName: SakeShooter.MasuStatus, Assembly-CSharp
+          m_MethodName: RaiseResultEvent
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
     OnRestoreInitialValues:
       m_PersistentCalls:
         m_Calls: []
@@ -756,6 +773,18 @@ MonoBehaviour:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
+--- !u!114 &19986936 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6771797150628172230, guid: 5263d2cc7a4a10c448a9001ef05052a9,
+    type: 3}
+  m_PrefabInstance: {fileID: 19986933}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 19986934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9799b50fce0e0d54cad756c3eaa8beca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &19986941 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 315975207918367324, guid: 5263d2cc7a4a10c448a9001ef05052a9,
@@ -1726,7 +1755,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collisionDetectionSystem: {fileID: 902916546}
-  masuPrefab: {fileID: 1092476314905848038, guid: 5263d2cc7a4a10c448a9001ef05052a9,
+  masuPrefab: {fileID: 5472156353075486463, guid: f05ac8432adbc6742bc0d6372c494329,
     type: 3}
   collectionChecks: 1
   maxPoolSize: 30
@@ -9029,11 +9058,11 @@ MonoBehaviour:
   fluid: {fileID: 5455451923965600354}
   masuCollider: {fileID: 5261595501281365119}
   resultManager: {fileID: 8670744029132980939}
+  successFeedback: {fileID: 0}
   goalPosition: {x: 0.5, y: 0.2, z: 2.76}
   fluidTransform: {fileID: 0}
   fluidMinHeight: 0
   fluidMaxHeight: 0
-  h: {x: 0, y: 0, z: 0}
 --- !u!4 &229219729924014585
 Transform:
   m_ObjectHideFlags: 0
