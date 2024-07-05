@@ -34,7 +34,7 @@ namespace SakeShooter
             transform.position += -Vector3.forward * _speed * Time.deltaTime;
         }
 
-        private void Stop()
+        public void Stop()
         {
             _speed = 0.0f;
         }

@@ -38,8 +38,6 @@ namespace SakeShooter
             col.RegisterOnDestroyAction(collisionDetectionSystem.RemoveMasuCollider);
             
             var masuStatus = masu.Status;
-            // Shaderに渡すプロパティのIDを取得
-            masuStatus.ShaderPropertyID = _shaderPropertyID;
             
             var res = masu.Result;
             res.RegisterOnExitAction(ReturnToPool);

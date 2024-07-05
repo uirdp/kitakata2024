@@ -3,27 +3,44 @@ using UnityEngine.Events;
 using SakeShooterSystems;
 using System;
 using Cysharp.Threading.Tasks;
+using MoreMountains.Feedbacks;
 
 
 namespace SakeShooter
 {
     public class MasuResult : MonoBehaviour
     {
+        public MMF_Player successFeedback;
         [SerializeField, Header("------ マス消滅時のイベント ------")]
         private GameEvent masuExitEvent = null;
 
         [SerializeField] private Masu masu = null;
-        public Vector3 goalPosition;
-        
+       
         private Action<Masu> _onExitAction;
 
-        public UniTask RaiseResultEvent(MasuExitStatus status)
+        private async UniTask PlayFeedbacks(MasuExitStatus status)
         {
+            if(status == MasuExitStatus.Success)
+            {
+                await successFeedback.PlayFeedbacksTask();
+            }
+        }
+        
+        public async UniTask RaiseResultEvent(MasuExitStatus status)
+        {
+            var mov = masu.Movement;
+            mov.Stop();
+            
+            Debug.Log(status);
+            
+            await PlayFeedbacks(status);
+            
             _onExitAction?.Invoke(masu);
             masuExitEvent.Raise(status);
             
-            return UniTask.CompletedTask;
         }
+        
+        
         public void RegisterOnExitAction(Action<Masu> action)
         {
             _onExitAction += action;

@@ -10,7 +10,7 @@ namespace SakeShooter
         public GameObject fluid;
         [SerializeField] public BoxHitArea masuCollider;
         public MasuResult resultManager;
-        public MMF_Player successFeedback;
+        public MMF_Player fullFeedback;
         
         public Vector3 goalPosition;
         
@@ -18,8 +18,6 @@ namespace SakeShooter
         [Tooltip("お酒の高さ-------------")]
         public float fluidMinHeight;
         public float fluidMaxHeight;
-        
-        public int ShaderPropertyID { get; set; }
         
         private float _initialCapacity;
         private float _currentAmount;
@@ -31,6 +29,10 @@ namespace SakeShooter
 
         private MasuExitStatus _currentStatus = MasuExitStatus.Failure;
 
+        private bool _hasReachedGoal = false;
+        // 満杯時のエフェクトで、一瞬向こう側を向いてしまって、ゴール判定になるため
+        private bool _isPlayingFeedback = false; 
+
         public void Start()
         {
             masuCollider.RegisterOnHitDetected(InvokeOnFill);
@@ -39,7 +41,8 @@ namespace SakeShooter
         public void Initialize(float capacity = 100.0f)
         {
             _currentStatus = MasuExitStatus.Failure;
-            
+
+            _hasReachedGoal = false;
             _currentAmount = 0f;
             _capacity = capacity;
             
@@ -61,9 +64,13 @@ namespace SakeShooter
             fluidTransform.position = position;
         }
 
-        private void Full()
+        private async void Full()
         {
+            _isPlayingFeedback = true;
             _currentStatus = MasuExitStatus.Success;
+            
+            await fullFeedback.PlayFeedbacksTask();
+            _isPlayingFeedback = false;
         }
       
         // なまえよくないとおもう
@@ -71,40 +78,22 @@ namespace SakeShooter
         {
             if(_currentAmount <= _capacity)
             {
-                Fill(6.0f);
+                Fill(9.0f);
             }
             else
             {
                 Full();
             }
         }
-
-        private void PlayFeedback()
-        {
-            switch (_currentStatus)
-            {
-                case MasuExitStatus.Success:
-                    successFeedback.PlayFeedbacks();
-                    break;
-                
-                case MasuExitStatus.Failure:
-                    Debug.Log("Failure");
-                    break;
-            }
-        }
-        // MMF_Playerから呼ばれます
-        public async void RaiseResultEvent()
-        {
-            await resultManager.RaiseResultEvent(_currentStatus);
-        }
-        private void CheckPosition()
+        private async void CheckPosition()
         {
             Vector3 forward = transform.TransformDirection(Vector3.forward);
             Vector3 toGoal = goalPosition - transform.position;
             
             if (Vector3.Dot(-forward, toGoal) < 0)
             {
-               PlayFeedback();
+                _hasReachedGoal = true;
+                await resultManager.RaiseResultEvent(_currentStatus);
             }
         }
 
@@ -114,7 +103,7 @@ namespace SakeShooter
             {
                 Initialize();
             }
-            CheckPosition();
+            if(!_hasReachedGoal && !_isPlayingFeedback) CheckPosition();
         }
         
         
