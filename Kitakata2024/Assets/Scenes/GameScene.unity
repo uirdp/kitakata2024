@@ -2569,6 +2569,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: masu_fin_v
       objectReference: {fileID: 0}
+    - target: {fileID: 3232643237644688052, guid: 15d26f66fa1f23b4fb31041a76c3d1cf,
+        type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2896,7 +2901,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: adb24518d159048ca9cb62d63113784f, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

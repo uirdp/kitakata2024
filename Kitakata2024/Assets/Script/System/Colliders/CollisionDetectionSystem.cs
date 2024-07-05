@@ -73,7 +73,7 @@ namespace SakeShooterSystems
                 GameObject mgo = mcol.GameObject;
 
                 //Nullならコライダーのリストから削除
-                if (mgo == null)
+                if (ReferenceEquals(mgo, null))
                 {
                     _masuColliders.RemoveAt(i);
                     continue;
