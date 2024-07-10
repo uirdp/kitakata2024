@@ -31,8 +31,6 @@ namespace SakeShooter
             var mov = masu.Movement;
             mov.Stop();
             
-            Debug.Log(status);
-            
             await PlayFeedbacks(status);
             
             _onExitAction?.Invoke(masu);
