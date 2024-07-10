@@ -8,6 +8,7 @@ using Vector3 = UnityEngine.Vector3;
 // ラッパークラスMasuをつくって、statusとmoveをもたせる
 namespace SakeShooter
 {
+    // Masu Spawn Managerに改名すべし
     public class MasuManager : MonoBehaviour
     {
         public MasuObjectPool masuObjectPool;

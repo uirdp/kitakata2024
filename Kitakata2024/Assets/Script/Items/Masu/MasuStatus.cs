@@ -52,7 +52,6 @@ namespace SakeShooter
             Vector3 position = fluidTransform.position;
             position.y = fluidMinHeight;
             fluid.transform.position = position;
-
         }
     
         private void Fill(float amount)
@@ -69,7 +68,7 @@ namespace SakeShooter
             _isPlayingFeedback = true;
             _currentStatus = MasuExitStatus.Success;
             
-            await fullFeedback.PlayFeedbacksTask();
+            await fullFeedback?.PlayFeedbacksTask();
             _isPlayingFeedback = false;
         }
       
@@ -82,7 +81,7 @@ namespace SakeShooter
             }
             else
             {
-                Full();
+                if(_currentStatus == MasuExitStatus.Failure) Full();
             }
         }
         private async void CheckPosition()

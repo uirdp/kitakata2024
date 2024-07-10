@@ -11,6 +11,7 @@ namespace SakeShooter
         private float _acceleration;
         private Vector3 _direction;
         private Vector3 _initialPosition;
+        
 
         public void Initialize(Masu masu, float speed, float acceleration, Vector3 direction, Vector3 initialPosition)
         {
@@ -37,6 +38,16 @@ namespace SakeShooter
         public void Stop()
         {
             _speed = 0.0f;
+        }
+        
+        public void SetAcceleration(float acceleration)
+        {
+            _acceleration = acceleration;
+        }
+        
+        public void SetSpeed(float speed)
+        {
+            _speed = speed;
         }
     }
 }
