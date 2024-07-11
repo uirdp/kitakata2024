@@ -13,6 +13,7 @@ public class UIController : MonoBehaviour
 
     private Label _label;
     private Label _score;
+    private Label _difficulty;
     private Label _time;
     
     private void Start()
@@ -22,11 +23,17 @@ public class UIController : MonoBehaviour
         _label = scoreText.rootVisualElement.Q<Label>("Label");
         _score = scoreText.rootVisualElement.Q<Label>("Score");
         _time = time.rootVisualElement.Q<Label>("time");
+        _difficulty = scoreText.rootVisualElement.Q<Label>("Difficulty");
 
+        _difficulty.text = "";
         _score.text = "0";
         _time.text = "Stopped";
     }
 
+    public void ShowDifficulty(string d)
+    {
+        _difficulty.text = d;
+    }
     public void UpdateTime(float t)
     {
         _time.text = t.ToString("F2");

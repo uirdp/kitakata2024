@@ -16,6 +16,16 @@ namespace SakeShooter
             _currentDifficulty = difficulty;
         }
         
+        public Difficulty GetNextDifficulty()
+        {
+            return (Difficulty)(((int)_currentDifficulty + 1) % Enum.GetValues(typeof(Difficulty)).Length);
+        }
+        
+        public Difficulty GetCurrentDifficulty()
+        {
+            return _currentDifficulty;
+        }
+        
         public Parameters GetParameters()
         {
             return parameters[(int)_currentDifficulty];

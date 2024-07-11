@@ -71,10 +71,22 @@ namespace SakeShooter
                 if (_currentDifficultyLevel == 0 && _elapsedTime >= 15.0f) ChangeDifficulty();
                 if (_currentDifficultyLevel == 1 && _elapsedTime >= 30.0f) ChangeDifficulty();
             }
+            
+            if(_isGamePaused) SetDifficulty();
 
             UpdateUI();
         }
 
+        private void SetDifficulty()
+        {
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                Difficulty d = difficultySetting.GetNextDifficulty();
+                difficultySetting.SetDifficulty(d);
+                
+                uiController.ShowDifficulty(d.ToString());
+            }
+        }
         private void SetParameters()
         {
             Parameters parameters = difficultySetting.GetParameters();
@@ -89,8 +101,6 @@ namespace SakeShooter
             masuManager.tawaraSpeed = parameters.TawaraSpeed;
             masuManager.tawaraAcceleration = parameters.TawaraAcceleration;
             // ------------------------------
-            
-            
         }
         private void StartGame()
         {
@@ -156,11 +166,15 @@ namespace SakeShooter
             {
                 // Logic to pause the game
                 Time.timeScale = 0f;
+                
+                Difficulty d = difficultySetting.GetCurrentDifficulty();
+                uiController.ShowDifficulty(d.ToString());
             }
             else
             {
                 // Logic to resume the game
                 Time.timeScale = 1f;
+                uiController.ShowDifficulty("");
             }
         }
     }

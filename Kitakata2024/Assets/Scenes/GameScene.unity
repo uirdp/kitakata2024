@@ -187,7 +187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2346feeb06f1a846a0f6355835cf0fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficultySetting: {fileID: 0}
+  difficultySetting: {fileID: 11400000, guid: ff650e5f16598f5428c1bfc465513f45, type: 2}
   uiController: {fileID: 348788653}
   masuManager: {fileID: 715492779}
 --- !u!4 &123581974
