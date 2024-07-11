@@ -104,6 +104,8 @@ namespace SakeShooter
         }
         private void StartGame()
         {
+            SetParameters();
+            
             _timeLeft = GameTime;
             _isGameRunning = true;
             _score = 0;
