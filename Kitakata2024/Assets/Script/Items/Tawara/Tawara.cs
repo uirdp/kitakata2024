@@ -11,6 +11,8 @@ namespace SakeShooter
     {
         public BoxHitArea tawaraCollider;
         public CollisionDetectionSystem collisionDetectionSystem;
+        public MasuMovement masuMovement;
+        
         public GameEvent upgradeEvent;
         public MMF_Player upgradeFeedback;
         
@@ -29,6 +31,8 @@ namespace SakeShooter
                 _isUpgraded = true;
                 
                 upgradeEvent.Raise();
+                masuMovement.Stop();
+                
                 await upgradeFeedback.PlayFeedbacksTask();
                 
                 gameObject.SetActive(false);

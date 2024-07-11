@@ -13,7 +13,6 @@ namespace SakeShooter
         [Header("---------- Managers ----------")]
         public UIController uiController;
         public MasuManager masuManager;
-
         
         private int _score = 0;
         

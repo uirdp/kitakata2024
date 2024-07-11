@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 8900000, guid: 619e305f5165a9946b7f72464e44ca4a, type: 3}
   m_Sun: {fileID: 2114283754330233425}
-  m_IndirectSpecularColor: {r: 0.029152155, g: 0.06444568, b: 0.12695068, a: 1}
+  m_IndirectSpecularColor: {r: 0.029152213, g: 0.064445764, b: 0.12695098, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -187,17 +187,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2346feeb06f1a846a0f6355835cf0fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  difficultySetting: {fileID: 0}
   uiController: {fileID: 348788653}
   masuManager: {fileID: 715492779}
-  _scoreByOneMasu: 100
-  maxSpawnInterval:
-  - 5
-  - 3.5
-  - 3.5
-  minSpawnInterval:
-  - 4
-  - 2
-  - 0.5
 --- !u!4 &123581974
 Transform:
   m_ObjectHideFlags: 0
@@ -863,11 +855,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   masuObjectPool: {fileID: 785018721}
   tawara: {fileID: 8329122882922151293}
-  tawaraSpeed: 2.96
-  tawaraAcceleration: 3.77
   masuSpawnPoint_start: {fileID: 946691998}
   masuSpawnPoint_end: {fileID: 603792671}
   masuMoveDirection: {x: -6.07, y: 0, z: -285.5}
+  tawaraSpeed: 2.96
+  tawaraAcceleration: 3.77
   masuSpeed: 2
   masuAcceleration: 1
   tawaraSpawnInterval: 8
@@ -4308,6 +4300,11 @@ PrefabInstance:
     - target: {fileID: 3304997675828936469, guid: 8e8810c9b89f9d74d885e6ae52f52197,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8277223894453867181, guid: 8e8810c9b89f9d74d885e6ae52f52197,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8665971569187263023, guid: 8e8810c9b89f9d74d885e6ae52f52197,
