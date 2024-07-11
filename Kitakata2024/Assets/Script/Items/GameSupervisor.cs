@@ -5,7 +5,7 @@ using UnityEngine.InputSystem.Layouts;
 
 namespace SakeShooter
 {
-    public class GameSuperviser : MonoBehaviour
+    public class GameSupervisor : MonoBehaviour
     {
         public UIController uiController;
         public MasuManager masuManager;
@@ -24,6 +24,7 @@ namespace SakeShooter
         private float _timeLeft = GameTime;
 
         private bool _isGameRunning = false;
+        private bool _isGamePaused = false;
 
         public void OnMasuExit(MasuExitStatus status)
         {
@@ -53,6 +54,11 @@ namespace SakeShooter
             if (Input.GetKeyDown(KeyCode.Q) || _timeLeft <= 0.0f)
             {
                 EndGame();
+            }
+            
+            if (Input.GetKeyDown(KeyCode.X))
+            {
+                TogglePauseGame();
             }
 
             if (_isGameRunning)
@@ -118,6 +124,22 @@ namespace SakeShooter
         {
             UpdateScore();
             UpdateTime();
+        }
+        
+        private void TogglePauseGame()
+        {
+            _isGamePaused = !_isGamePaused;
+
+            if (_isGamePaused)
+            {
+                // Logic to pause the game
+                Time.timeScale = 0f;
+            }
+            else
+            {
+                // Logic to resume the game
+                Time.timeScale = 1f;
+            }
         }
     }
 }

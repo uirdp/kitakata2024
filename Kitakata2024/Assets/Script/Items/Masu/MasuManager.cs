@@ -92,7 +92,7 @@ namespace SakeShooter
             var masuStatus = masu.Status;
             var masuMovement = masu.Movement;
             
-            masuStatus.Initialize(100.0f);
+            masuStatus.Initialize(60.0f);
             masuMovement.Initialize(masu, speed, acceleration, masuMoveDirection, position);
         }
         

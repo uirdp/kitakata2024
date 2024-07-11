@@ -77,7 +77,7 @@ namespace SakeShooter
         {
             if(_currentAmount <= _capacity)
             {
-                Fill(9.0f);
+                Fill(5.0f);
             }
             else
             {

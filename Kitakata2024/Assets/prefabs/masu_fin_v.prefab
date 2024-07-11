@@ -5076,7 +5076,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 038c9ded6ddcf4240bda5cfc080d5f9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: {x: 2, y: 2, z: 2}
+  size: {x: 2.15, y: 2.17, z: 2.15}
   gizmoColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!114 &4713056401956974631
 MonoBehaviour:

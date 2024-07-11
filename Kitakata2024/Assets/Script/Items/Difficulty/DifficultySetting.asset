@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4028583ca4a87af46adff09764ef01de, type: 3}
+  m_Name: DifficultySetting
+  m_EditorClassIdentifier: 
+  parameters:
+  - difficulty: 0
+    masuSpeed: 1
+    masuAcceleration: 1
+    maxWaitTimes:
+    - 5
+    - 3
+    - 3
+    minWaitTimes:
+    - 4
+    - 2.5
+    - 2
+    tawaraSpeed: 1
+    tawaraAcceleration: 2
+    score: 100
+  - difficulty: 1
+    masuSpeed: 1.5
+    masuAcceleration: 1.01
+    maxWaitTimes:
+    - 5
+    - 4
+    - 3
+    minWaitTimes:
+    - 4
+    - 3
+    - 2
+    tawaraSpeed: 2
+    tawaraAcceleration: 1.3
+    score: 500
+  - difficulty: 2
+    masuSpeed: 1.5
+    masuAcceleration: 1.05
+    maxWaitTimes:
+    - 4
+    - 3
+    - 2
+    minWaitTimes:
+    - 3
+    - 1.5
+    - 0.5
+    tawaraSpeed: 3
+    tawaraAcceleration: 1.05
+    score: 1000
