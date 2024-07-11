@@ -12,5 +12,7 @@ public class Memo
      *
      * ・MasuとTawaraの統一
      * ・CollisionDetectionSystemのRemoveを自動で呼ぶようにしたい
+     *　・GameEventの修正
+     * ・GunとGun Upgradeの分離
      */
 }

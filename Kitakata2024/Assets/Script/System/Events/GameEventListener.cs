@@ -3,10 +3,13 @@ using UnityEngine.Events;
 
 namespace SakeShooterSystems
 {
+    // ここももうちょっときれいにしてね
     public class GameEventListener : MonoBehaviour
     {
         public GameEvent Event;
-
+        
+        public UnityEvent upgradeResponse;
+        [Header("------ マス消滅時のイベント ------")]
         public UnityEvent<MasuExitStatus> Response;
 
         private void OnEnable()
@@ -18,10 +21,15 @@ namespace SakeShooterSystems
         {
             Event.UnregisterListener(this);
         }
-
+        
+        public void OnEventRaised()
+        {
+            upgradeResponse?.Invoke();
+        }
+        
         public void OnEventRaised(MasuExitStatus status)
         {
-            Response.Invoke(status);
+            Response?.Invoke(status);
         }
     }
 }

@@ -9,10 +9,12 @@ namespace SakeShooter
     {
         public BoxHitArea tawaraCollider;
         public CollisionDetectionSystem collisionDetectionSystem;
+        public GameEvent upgradeEvent;
 
         private void BroadCastUpgrade()
         {
             Debug.Log("ugrade!");
+            upgradeEvent.Raise();
         }
         
         private void Start()
