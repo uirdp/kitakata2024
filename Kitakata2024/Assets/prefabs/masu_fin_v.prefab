@@ -5048,7 +5048,7 @@ MonoBehaviour:
   masuCollider: {fileID: 9143378274393519779}
   resultManager: {fileID: 2883483109371254878}
   fullFeedback: {fileID: 6565882470021375845}
-  goalPosition: {x: 0.4, y: 0.5, z: 4}
+  goalPosition: {x: -7, y: -4.5, z: 5.8}
   fluidTransform: {fileID: 563159545694070771}
   fluidMinHeight: 0.06
   fluidMaxHeight: 1.55

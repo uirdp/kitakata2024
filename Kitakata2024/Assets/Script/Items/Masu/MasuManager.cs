@@ -15,8 +15,9 @@ namespace SakeShooter
         [Header("------ たわら ------")]
         public Masu tawara; // 今はまだ俵はマスに無理やりクラスをくっつけているだけなので、後で分離する
         public float tawaraSpeed = 2.0f;
-        public float tawaraAcceleration = 1.03f;
+        public float tawaraAcceleration = 1.30f;
         
+        [Header("------ 升の生成位置 ------")]
         public Transform masuSpawnPoint_start;
         public Transform masuSpawnPoint_end;
         
@@ -28,7 +29,7 @@ namespace SakeShooter
         public float masuAcceleration = 1.03f;
         
         [Header("------ 俵の生成間隔 ------")]
-        public float tawaraSpawnInterval = 10.0f;
+        public float tawaraSpawnInterval = 8.0f;
         // structでもいいかも
         private Vector3 _normalStart;
         private Vector3 _normalEnd;
@@ -99,7 +100,8 @@ namespace SakeShooter
         private async void SpawnTawaraByTime(Vector3 position, float speed, float acceleration)
         {
             _canSpawnTawara = false;
-       
+            
+            float spawnTime = UnityEngine.Random.Range(tawaraSpawnInterval, tawaraSpawnInterval + 2.0f);
             await UniTask.Delay(TimeSpan.FromSeconds(tawaraSpawnInterval));
             SpawnTawara(position, speed, acceleration);
             
@@ -108,12 +110,12 @@ namespace SakeShooter
         
         private void SpawnTawara(Vector3 position, float speed, float acceleration)
         {
-            Debug.Log("Spawn Tawara");
-            tawara.gameObject.SetActive(true);   
+            tawara.gameObject.SetActive(true);
+            
             var masuStatus = tawara.Status;
             var masuMovement = tawara.Movement;
             
-            masuStatus.Initialize(100.0f);
+            masuStatus.Initialize(10000.0f);
             masuMovement.Initialize(tawara, speed, acceleration, masuMoveDirection, position);
         }
         

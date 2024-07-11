@@ -1,3 +1,5 @@
+using System;
+using MoreMountains.Feedbacks;
 using SakeShooterSystems;
 using UnityEngine;
 
@@ -10,11 +12,27 @@ namespace SakeShooter
         public BoxHitArea tawaraCollider;
         public CollisionDetectionSystem collisionDetectionSystem;
         public GameEvent upgradeEvent;
-
-        private void BroadCastUpgrade()
+        public MMF_Player upgradeFeedback;
+        
+        private bool _isUpgraded = false;
+        
+        private void OnEnable()
         {
-            Debug.Log("ugrade!");
-            upgradeEvent.Raise();
+            _isUpgraded = false;
+        }
+
+        private async void BroadCastUpgrade()
+        {
+           
+            if (!_isUpgraded)
+            {
+                _isUpgraded = true;
+                
+                upgradeEvent.Raise();
+                await upgradeFeedback.PlayFeedbacksTask();
+                
+                gameObject.SetActive(false);
+            }
         }
         
         private void Start()

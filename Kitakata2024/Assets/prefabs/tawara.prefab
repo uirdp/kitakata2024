@@ -6175,7 +6175,7 @@ MonoBehaviour:
   masuCollider: {fileID: 5379503808253206028}
   resultManager: {fileID: 7361503700843731973}
   fullFeedback: {fileID: 6688641985169231922}
-  goalPosition: {x: 0.4, y: 0.5, z: 4}
+  goalPosition: {x: 0.4, y: 1.3, z: 3.8}
   fluidTransform: {fileID: 7405702003447327034}
   fluidMinHeight: 0.06
   fluidMaxHeight: 1.55
@@ -6864,6 +6864,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tawaraCollider: {fileID: 5379503808253206028}
+  collisionDetectionSystem: {fileID: 0}
+  upgradeEvent: {fileID: 0}
+  upgradeFeedback: {fileID: 0}
 --- !u!1001 &3458725867951177478
 PrefabInstance:
   m_ObjectHideFlags: 0

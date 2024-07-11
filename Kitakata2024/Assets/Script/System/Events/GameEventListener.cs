@@ -8,6 +8,7 @@ namespace SakeShooterSystems
     {
         public GameEvent Event;
         
+        [Header("------ 銃アップグレード時のイベント ------")]
         public UnityEvent upgradeResponse;
         [Header("------ マス消滅時のイベント ------")]
         public UnityEvent<MasuExitStatus> Response;

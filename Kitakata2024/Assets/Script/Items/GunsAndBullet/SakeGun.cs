@@ -16,6 +16,10 @@ namespace SakeShooter
         public float fireInterval = 0.02f;
         [Tooltip("リロード（補充にかかる時間、小さいほど早くたまる")]
         public float reloadInterval = 5.0f;
+        
+        [Tooltip("アップグレード時に上がる数値")]
+        public float upgradeFireInterval = 0.005f;
+        public float upgradeReloadInterval = 0.5f;
 
         [SerializeField, Tooltip("打てる酒の量")] 
         private float _capacity = 50.0f;
@@ -61,6 +65,27 @@ namespace SakeShooter
             if (_canRefill && _currentState == States.Fill) RefillBottle();
         }
 
+        public void Upgrade()
+        {
+            float upgradedFireInterval = fireInterval - upgradeFireInterval;
+            float upgradedReloadInterval = reloadInterval - upgradeReloadInterval;
+            
+            if(upgradedFireInterval > 0f)
+            {
+                fireInterval = upgradedFireInterval;
+            }
+            
+            if(upgradedReloadInterval > 0f)
+            {
+                reloadInterval = upgradedReloadInterval;
+            }
+            
+            if(upgradedFireInterval <= 0f && upgradedReloadInterval <= 0f)
+            {
+                Debug.Log("これ以上アップグレードできません");
+            }
+        }
+        
         private async void RefillBottle()
         {
             if (_input.refill)
