@@ -8,6 +8,18 @@ namespace SakeShooter
     public class DifficultySetting : ScriptableObject
     {
         public List<Parameters> parameters;
+
+        private Difficulty _currentDifficulty = Difficulty.Normal;
+        
+        public void SetDifficulty(Difficulty difficulty)
+        {
+            _currentDifficulty = difficulty;
+        }
+        
+        public Parameters GetParameters()
+        {
+            return parameters[(int)_currentDifficulty];
+        }
     }
 
     public enum Difficulty

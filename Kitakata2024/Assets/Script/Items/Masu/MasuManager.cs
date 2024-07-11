@@ -14,22 +14,27 @@ namespace SakeShooter
         public MasuObjectPool masuObjectPool;
         [Header("------ たわら ------")]
         public Masu tawara; // 今はまだ俵はマスに無理やりクラスをくっつけているだけなので、後で分離する
-        public float tawaraSpeed = 2.0f;
-        public float tawaraAcceleration = 1.30f;
         
-        [Header("------ 升の生成位置 ------")]
+        [Header("------ マスの生成範囲 ------")]
         public Transform masuSpawnPoint_start;
         public Transform masuSpawnPoint_end;
         
-        [Tooltip("升が流れる方向を指定")]
+        [Tooltip("升が流れる方向を指定"), HideInInspector]
         public Vector3 masuMoveDirection;
         
-        [Header("------ 升の速度と加速度 ------")]
+        // ---------------- Parameters ------------------
+        [HideInInspector]
+        public float tawaraSpeed = 2.0f;
+        public float tawaraAcceleration = 1.30f;
+        
+        [HideInInspector]
         public float masuSpeed = 2.0f;
         public float masuAcceleration = 1.03f;
         
-        [Header("------ 俵の生成間隔 ------")]
+        [HideInInspector]
         public float tawaraSpawnInterval = 8.0f;
+        // ----------------------------------------------
+        
         // structでもいいかも
         private Vector3 _normalStart;
         private Vector3 _normalEnd;
@@ -102,7 +107,7 @@ namespace SakeShooter
             _canSpawnTawara = false;
             
             float spawnTime = UnityEngine.Random.Range(tawaraSpawnInterval, tawaraSpawnInterval + 2.0f);
-            await UniTask.Delay(TimeSpan.FromSeconds(tawaraSpawnInterval));
+            await UniTask.Delay(TimeSpan.FromSeconds(spawnTime));
             SpawnTawara(position, speed, acceleration);
             
             _canSpawnTawara = true;

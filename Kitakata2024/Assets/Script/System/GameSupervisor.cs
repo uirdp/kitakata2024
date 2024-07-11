@@ -7,17 +7,22 @@ namespace SakeShooter
 {
     public class GameSupervisor : MonoBehaviour
     {
+        [Header("-------- 難易度設定 ----------")]
+        public DifficultySetting difficultySetting;
+        
+        [Header("---------- Managers ----------")]
         public UIController uiController;
         public MasuManager masuManager;
 
-        public int _scoreByOneMasu = 100;
+        
         private int _score = 0;
         
-        [Header("マスの生成スピードの調整：maxとminの間でランダムに生成される")]
-        public float[] maxSpawnInterval = { 7.0f, 5.0f, 3.0f };
-        public float[] minSpawnInterval = { 4.0f, 2.0f, 0.5f };
+        private float[] _maxSpawnInterval = { 7.0f, 5.0f, 3.0f };
+        private float[] _minSpawnInterval = { 4.0f, 2.0f, 0.5f };
         // enumにした方がいいかも？
+        // こっちのdifficultyは全体の難易度ではなく相対的
         private int _currentDifficultyLevel = 0;
+        private int _scoreByOneMasu = 100;
 
         private const float GameTime = 60.0f;
         private float _elapsedTime = 0.0f;
@@ -70,7 +75,24 @@ namespace SakeShooter
 
             UpdateUI();
         }
-        
+
+        private void SetParameters()
+        {
+            Parameters parameters = difficultySetting.GetParameters();
+
+            _scoreByOneMasu = parameters.Score;
+            _maxSpawnInterval = parameters.MaxWaitTimes;
+            _minSpawnInterval = parameters.MinWaitTimes;
+            
+            // masuManager -----------------
+            masuManager.masuSpeed = parameters.MasuSpeed;
+            masuManager.masuAcceleration = parameters.MasuAcceleration;
+            masuManager.tawaraSpeed = parameters.TawaraSpeed;
+            masuManager.tawaraAcceleration = parameters.TawaraAcceleration;
+            // ------------------------------
+            
+            
+        }
         private void StartGame()
         {
             _timeLeft = GameTime;
@@ -101,7 +123,8 @@ namespace SakeShooter
         
         private void ChangeSpawnRate()
         {
-            masuManager.ChangeSpawnRate(maxSpawnInterval[_currentDifficultyLevel], minSpawnInterval[_currentDifficultyLevel]);
+            masuManager.ChangeSpawnRate(_maxSpawnInterval[_currentDifficultyLevel],
+                _minSpawnInterval[_currentDifficultyLevel]);
         }
         private void ChangeDifficulty()
         {
