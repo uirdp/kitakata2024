@@ -177,6 +177,7 @@ namespace SakeShooter
                 // Logic to resume the game
                 Time.timeScale = 1f;
                 uiController.ShowDifficulty("");
+                SetParameters();
             }
         }
     }
