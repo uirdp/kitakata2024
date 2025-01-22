@@ -33,6 +33,9 @@ namespace SakeShooter
         
         [HideInInspector]
         public float tawaraSpawnInterval = 8.0f;
+        
+        [HideInInspector]
+        public float fillAmount = 5.0f;
         // ----------------------------------------------
         
         // structでもいいかも
@@ -41,19 +44,25 @@ namespace SakeShooter
         
         private float _maxWaitTime = 4.0f;
         private float _minWaitTime = 0.5f;
+        
+        private bool _endSpawn = false;
+        
         private bool _canSpawn = false;
         private bool _canSpawnTawara = false;
         
         public void StartSpawning()
         {
+            _endSpawn = false;
+         
             _canSpawn = true;
             _canSpawnTawara = true;
         }
 
         public void EndSpawning()
-        {
+        { 
             _canSpawn = false;
             _canSpawnTawara = false;
+            _endSpawn = true;
         }
         
         public void ChangeSpawnRate(float max, float min)
@@ -69,8 +78,15 @@ namespace SakeShooter
         
         private void Update()
         {
+            if(_endSpawn)
+            {
+                _canSpawn = false;
+                _canSpawnTawara = false;
+            }
+            
             if(_canSpawn) SpawnMasuByTime(SetSpawnPoint(), masuSpeed, masuAcceleration);
             if(_canSpawnTawara) SpawnTawaraByTime(SetSpawnPoint(), tawaraSpeed, tawaraAcceleration);
+            
         }
 
        
@@ -96,6 +112,9 @@ namespace SakeShooter
             var masu = masuObjectPool.GetMasu();
             var masuStatus = masu.Status;
             var masuMovement = masu.Movement;
+            
+            //　ここ怖いけど応急措置
+            masuStatus.fillAmount = fillAmount;
             
             masuStatus.Initialize(60.0f);
             masuMovement.Initialize(masu, speed, acceleration, masuMoveDirection, position);

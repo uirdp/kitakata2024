@@ -1,7 +1,8 @@
+using System;
+using Cysharp.Threading.Tasks;
 using SakeShooter;
 using UnityEngine;
 using SakeShooterSystems;
-using UnityEngine.InputSystem.Layouts;
 
 namespace SakeShooter
 {
@@ -12,7 +13,15 @@ namespace SakeShooter
         
         [Header("---------- Managers ----------")]
         public UIController uiController;
+        public SoundEffectManager soundEffectManager;
         public MasuManager masuManager;
+        public ScoreRecorder scoreRecorder;
+        public SakeGun sakeGun;
+
+        [Header("-------- 雰囲気 ----------")] 
+        public Light normalLight;
+        public Light nightLight;
+        
         
         private int _score = 0;
         
@@ -23,12 +32,16 @@ namespace SakeShooter
         private int _currentDifficultyLevel = 0;
         private int _scoreByOneMasu = 100;
 
-        private const float GameTime = 60.0f;
+        private const float GameTime = 70.0f;
         private float _elapsedTime = 0.0f;
         private float _timeLeft = GameTime;
 
         private bool _isGameRunning = false;
         private bool _isGamePaused = false;
+        
+        private bool _isMasuSpawning = false;
+
+        private bool _isScoreRecorded = true;
 
         public void OnMasuExit(MasuExitStatus status)
         {
@@ -43,50 +56,103 @@ namespace SakeShooter
             }
         }
 
-        private void Update()
+        private void Start()
         {
+            UpdateHighScore();
+            PlayMusic();
+            ToggleNormalLight();
+        }
+        
+        //　応急措置
+        private async void PlayMusic()
+        {
+            await UniTask.Delay(TimeSpan.FromSeconds(1.0f));
+            soundEffectManager.PlayRestMusic();
+        }
+        
+        private void ProcessInput()
+        {
+            // 升のスポーン開始（チュートリアル用）
             if (Input.GetKeyDown(KeyCode.T))
             {
-                masuManager.StartSpawning();
+                if (!_isMasuSpawning)
+                {
+                    masuManager.StartSpawning();
+                    _isMasuSpawning = true;
+                }
+                else
+                {
+                    masuManager.EndSpawning();
+                    _isMasuSpawning = false;
+                }
             }
             
+            // ゲーム開始
             if (Input.GetKeyDown(KeyCode.Space) && !_isGameRunning)
             {
                 StartGame();
             }
-
+            
+            // ゲーム終了（アプリケーションは終了しない）
             if (Input.GetKeyDown(KeyCode.Q) || _timeLeft <= 0.0f)
             {
-                EndGame();
+                if(_isGameRunning)  EndGame();
             }
             
             if (Input.GetKeyDown(KeyCode.X))
             {
                 TogglePauseGame();
             }
-
-            if (_isGameRunning)
+        }
+        
+        private void ProcessInputPaused()
+        {
+            if (Input.GetKeyDown(KeyCode.D))　SetDifficulty();
+            if (Input.GetKeyDown(KeyCode.P)) _isScoreRecorded = false;
+                
+            if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                CountDown();
-                if (_currentDifficultyLevel == 0 && _elapsedTime >= 15.0f) ChangeDifficulty();
-                if (_currentDifficultyLevel == 1 && _elapsedTime >= 30.0f) ChangeDifficulty();
+                ToggleNormalLight();
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                ToggleNightLight();
             }
             
-            if(_isGamePaused) SetDifficulty();
-
-            UpdateUI();
+            if(Input.GetKey(KeyCode.P) && Input.GetKeyDown(KeyCode.C))
+            {
+                scoreRecorder.ResetAllScores();
+                UpdateHighScore();
+            }
         }
-
+        
+        // 雰囲気を変える
+        private void ToggleNormalLight()
+        {
+            normalLight.enabled = true;
+            nightLight.enabled = false;
+        }
+        
+        // 雰囲気を変える
+        private void ToggleNightLight()
+        {
+            // Enable the night light and disable the normal light
+            nightLight.enabled = true;
+            normalLight.enabled = false;
+        }
         private void SetDifficulty()
         {
-            if (Input.GetKeyDown(KeyCode.D))
-            {
+           
                 Difficulty d = difficultySetting.GetNextDifficulty();
                 difficultySetting.SetDifficulty(d);
                 
                 uiController.ShowDifficulty(d.ToString());
-            }
+                
+                SetParameters();
+            
         }
+        
+        // 難易度設定によってパラメータを設定
         private void SetParameters()
         {
             Parameters parameters = difficultySetting.GetParameters();
@@ -100,12 +166,16 @@ namespace SakeShooter
             masuManager.masuAcceleration = parameters.MasuAcceleration;
             masuManager.tawaraSpeed = parameters.TawaraSpeed;
             masuManager.tawaraAcceleration = parameters.TawaraAcceleration;
+            masuManager.fillAmount = parameters.MasuFillAmount;
             // ------------------------------
         }
         private void StartGame()
         {
-            SetParameters();
             
+            SetParameters();
+
+            sakeGun.ResetUpgradeStatus();
+            _isScoreRecorded = true;
             _timeLeft = GameTime;
             _isGameRunning = true;
             _score = 0;
@@ -113,8 +183,10 @@ namespace SakeShooter
             _currentDifficultyLevel = 0;
             
             ChangeSpawnRate();
-
+            
             masuManager.StartSpawning();
+            soundEffectManager.PlayGameStartSound();
+            soundEffectManager.PlayGameMusic();
         }
 
         private void EndGame()
@@ -122,6 +194,20 @@ namespace SakeShooter
             _isGameRunning = false;
 
             masuManager.EndSpawning();
+            soundEffectManager.PlayGameEndSound();
+            
+            soundEffectManager.PlayRestMusic();
+
+            if (_isScoreRecorded)
+            {
+                if (scoreRecorder.RecordTopThreeScores(_score))
+                {
+                    uiController.UpdateHighScoreBoard();
+                }
+            }
+            
+            UpdateHighScore();
+            uiController.UpdateTime("スペースで開始");
         }
 
         private void CountDown()
@@ -146,12 +232,13 @@ namespace SakeShooter
 
         private void UpdateScore()
         {
-            uiController.UpdateScore(_score);
+            uiController.UpdateScoreBoard("現在のすこあ: " + _score.ToString());
+            uiController.UpdateScore(_score.ToString());
         }
 
         private void UpdateTime()
         {
-            uiController.UpdateTime(_timeLeft);
+            uiController.UpdateTime(_timeLeft.ToString("F2"));
         }
 
         private void UpdateUI()
@@ -168,6 +255,7 @@ namespace SakeShooter
             {
                 // Logic to pause the game
                 Time.timeScale = 0f;
+                soundEffectManager.PlayPauseSound();
                 
                 Difficulty d = difficultySetting.GetCurrentDifficulty();
                 uiController.ShowDifficulty(d.ToString());
@@ -176,9 +264,47 @@ namespace SakeShooter
             {
                 // Logic to resume the game
                 Time.timeScale = 1f;
+                soundEffectManager.PlayResumeSound();
+                
                 uiController.ShowDifficulty("");
                 SetParameters();
             }
+        }
+
+        public async void NotifyUpgrade()
+        {
+            uiController.ChangeUpgradeMessage("あっぷぐれえど！");
+
+            await UniTask.Delay(TimeSpan.FromSeconds(2.0f));
+            
+            uiController.ChangeUpgradeMessage("");
+        }
+        
+        private void UpdateHighScore()
+        {
+            int[] scores = scoreRecorder.GetTopThreeScores();
+            
+            string highScores = scores[0] + "\n" + scores[1] + "\n" + scores[2];
+            uiController.UpdateHighScore(highScores);
+        }
+        
+        private void Update()
+        {
+            ProcessInput();
+             
+            if (_isGamePaused)
+            {
+                ProcessInputPaused();
+            }
+
+            if (_isGameRunning)
+            {
+                CountDown();
+                UpdateUI();
+                if (_currentDifficultyLevel == 0 && _elapsedTime >= 15.0f) ChangeDifficulty();
+                if (_currentDifficultyLevel == 1 && _elapsedTime >= 30.0f) ChangeDifficulty();
+            }
+            
         }
     }
 }

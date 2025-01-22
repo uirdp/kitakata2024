@@ -19,6 +19,8 @@ namespace SakeShooter
         public float fluidMinHeight;
         public float fluidMaxHeight;
         
+        public float fillAmount;
+        
         private float _initialCapacity;
         private float _currentAmount;
         
@@ -35,7 +37,7 @@ namespace SakeShooter
 
         public void Start()
         {
-            masuCollider.RegisterOnHitDetected(InvokeOnFill);
+            masuCollider.RegisterOnHitDetected(OnHitDetected);
         }
 
         public void Initialize(float capacity = 100.0f)
@@ -72,12 +74,12 @@ namespace SakeShooter
             _isPlayingFeedback = false;
         }
       
-        // なまえよくないとおもう
-        private void InvokeOnFill()
+        // 弾が当たった時の処理
+        private void OnHitDetected()
         {
             if(_currentAmount <= _capacity)
             {
-                Fill(5.0f);
+                Fill(fillAmount);
             }
             else
             {

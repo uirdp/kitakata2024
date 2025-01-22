@@ -1,8 +1,9 @@
 using System;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using System.Collections.Generic;
 using Random = UnityEngine.Random;
+using MoreMountains.Feedbacks;
 
 namespace SakeShooter
 {
@@ -11,15 +12,22 @@ namespace SakeShooter
         [Header("------ Game Objects------")] public GameObject player;
         public BulletObjectPool bulletObjectPool;
         public UIController ui;
+        
+        [Header("------ 着せ替え ------")]
+        public List<Material> materials;
 
         [Header("------ Parameter Settings ------")] [Tooltip("The time between each shot")]
         public float fireInterval = 0.02f;
         [Tooltip("リロード（補充にかかる時間、小さいほど早くたまる")]
         public float reloadInterval = 5.0f;
         
+        private float _initialFireInterval = 0.1f;
+        private float _initialReloadInterval = 0.08f;
+        
         [Tooltip("アップグレード時に上がる数値")]
         public float upgradeFireInterval = 0.005f;
         public float upgradeReloadInterval = 0.5f;
+        public MMF_Player upgradeFeedback;
 
         [SerializeField, Tooltip("打てる酒の量")] 
         private float _capacity = 50.0f;
@@ -39,6 +47,10 @@ namespace SakeShooter
 
         private const uint NumOfStates = 2;
         private States _currentState = States.None;
+        
+        private Renderer _renderer;
+        private Material _currentMaterial;
+        private int _currentMaterialIndex = 0;
 
         private enum States
         {
@@ -52,21 +64,33 @@ namespace SakeShooter
             _input = player.GetComponent<SakeShooterInputs>();
             _canFire = true;
             _currentAmount = _capacity;
+
+            
+            // Initialize the renderer
+            _renderer = GetComponent<Renderer>();
+            _currentMaterialIndex = 0;
+            // Set the initial material
+            _renderer.material = materials[_currentMaterialIndex];
         }
 
         private void Update()
         {
-            Ray ray = new Ray(this.transform.position, this.transform.forward);
-            Debug.DrawRay(this.transform.position, ray.direction * 10, Color.red);
             
+            ChangeMaterial();
             ChangeState();
             
             if (_canFire && _currentState == States.Fire) Fire();
             if (_canRefill && _currentState == States.Fill) RefillBottle();
         }
-
-        public void Upgrade()
+        
+        public void ResetUpgradeStatus()
         {
+            fireInterval = _initialFireInterval;
+            reloadInterval = _initialReloadInterval;
+        }
+        public void Upgrade()
+        { 
+            upgradeFeedback.PlayFeedbacks();
             float upgradedFireInterval = fireInterval - upgradeFireInterval;
             float upgradedReloadInterval = reloadInterval - upgradeReloadInterval;
             
@@ -124,6 +148,19 @@ namespace SakeShooter
 
                 _currentAmount -= OneShotAmount;
                 ui.UpdateSakeAmount(_currentAmount);
+            }
+        }
+        
+        private void ChangeMaterial()
+        {
+            if (Input.GetKeyDown(KeyCode.M))
+            {
+                
+                    _currentMaterialIndex++;
+                    if (_currentMaterialIndex >= materials.Count) _currentMaterialIndex = 0;
+                    // Update the material of the renderer
+                    _renderer.material = materials[_currentMaterialIndex];
+                
             }
         }
     }

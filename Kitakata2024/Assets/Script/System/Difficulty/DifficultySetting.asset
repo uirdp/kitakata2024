@@ -14,35 +14,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parameters:
   - difficulty: 0
-    masuSpeed: 1
-    masuAcceleration: 1
+    masuSpeed: 2.5
+    masuAcceleration: 0
     maxWaitTimes:
     - 5
-    - 3
-    - 3
-    minWaitTimes:
-    - 4
-    - 2.5
-    - 2
-    tawaraSpeed: 1
-    tawaraAcceleration: 2
-    score: 100
-  - difficulty: 1
-    masuSpeed: 1.5
-    masuAcceleration: 1.01
-    maxWaitTimes:
     - 5
     - 4
-    - 3
     minWaitTimes:
+    - 5
     - 4
-    - 3
-    - 2
+    - 3.5
+    masuFillAmount: 9
     tawaraSpeed: 2
+    tawaraAcceleration: 1
+    score: 1000
+  - difficulty: 1
+    masuSpeed: 5
+    masuAcceleration: 0
+    maxWaitTimes:
+    - 4
+    - 3
+    - 3
+    minWaitTimes:
+    - 3
+    - 1.5
+    - 0.7
+    masuFillAmount: 5
+    tawaraSpeed: 4
     tawaraAcceleration: 1.3
-    score: 500
+    score: 1200
   - difficulty: 2
-    masuSpeed: 1.5
+    masuSpeed: 1.2
     masuAcceleration: 1.05
     maxWaitTimes:
     - 4
@@ -50,8 +52,9 @@ MonoBehaviour:
     - 2
     minWaitTimes:
     - 3
-    - 1.5
+    - 2
     - 0.5
+    masuFillAmount: 5
     tawaraSpeed: 3
     tawaraAcceleration: 1.05
-    score: 1000
+    score: 1300

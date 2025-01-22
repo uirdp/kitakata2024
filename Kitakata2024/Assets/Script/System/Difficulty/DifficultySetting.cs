@@ -53,6 +53,9 @@ namespace SakeShooter
         [SerializeField] private float[] maxWaitTimes = { 0f, 0f, 0f };
         [SerializeField] private float[] minWaitTimes = { 0f, 0f, 0f };
         
+        [Header("------ 升に溜まる量 ------")]
+        [SerializeField] private float masuFillAmount;
+        
         [Header("------ 俵の速度と加速度 ------")]
         [SerializeField] private float tawaraSpeed;
         [SerializeField] private float tawaraAcceleration;
@@ -68,5 +71,6 @@ namespace SakeShooter
         public float[] MinWaitTimes => minWaitTimes;
         public int Score => score;
         
+        public float MasuFillAmount => masuFillAmount;
     }
 }
