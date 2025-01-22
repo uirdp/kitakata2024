@@ -9,7 +9,7 @@ using Vector3 = UnityEngine.Vector3;
 namespace SakeShooter
 {
     // Masu Spawn Managerに改名すべし
-    public class MasuManager : MonoBehaviour
+    public class MasuSpawnManager : MonoBehaviour
     {
         public MasuObjectPool masuObjectPool;
         [Header("------ たわら ------")]

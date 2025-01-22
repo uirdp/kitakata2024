@@ -6,7 +6,7 @@ using SakeShooterSystems;
 
 namespace SakeShooter
 {
-    public class GameSupervisor : MonoBehaviour
+    public class GameMain : MonoBehaviour
     {
         [Header("-------- 難易度設定 ----------")]
         public DifficultySetting difficultySetting;
@@ -14,7 +14,7 @@ namespace SakeShooter
         [Header("---------- Managers ----------")]
         public UIController uiController;
         public SoundEffectManager soundEffectManager;
-        public MasuManager masuManager;
+        public MasuSpawnManager masuSpawnManager;
         public ScoreRecorder scoreRecorder;
         public SakeGun sakeGun;
 
@@ -77,12 +77,12 @@ namespace SakeShooter
             {
                 if (!_isMasuSpawning)
                 {
-                    masuManager.StartSpawning();
+                    masuSpawnManager.StartSpawning();
                     _isMasuSpawning = true;
                 }
                 else
                 {
-                    masuManager.EndSpawning();
+                    masuSpawnManager.EndSpawning();
                     _isMasuSpawning = false;
                 }
             }
@@ -161,12 +161,12 @@ namespace SakeShooter
             _maxSpawnInterval = parameters.MaxWaitTimes;
             _minSpawnInterval = parameters.MinWaitTimes;
             
-            // masuManager -----------------
-            masuManager.masuSpeed = parameters.MasuSpeed;
-            masuManager.masuAcceleration = parameters.MasuAcceleration;
-            masuManager.tawaraSpeed = parameters.TawaraSpeed;
-            masuManager.tawaraAcceleration = parameters.TawaraAcceleration;
-            masuManager.fillAmount = parameters.MasuFillAmount;
+            // masuSpawnManager -----------------
+            masuSpawnManager.masuSpeed = parameters.MasuSpeed;
+            masuSpawnManager.masuAcceleration = parameters.MasuAcceleration;
+            masuSpawnManager.tawaraSpeed = parameters.TawaraSpeed;
+            masuSpawnManager.tawaraAcceleration = parameters.TawaraAcceleration;
+            masuSpawnManager.fillAmount = parameters.MasuFillAmount;
             // ------------------------------
         }
         private void StartGame()
@@ -184,7 +184,7 @@ namespace SakeShooter
             
             ChangeSpawnRate();
             
-            masuManager.StartSpawning();
+            masuSpawnManager.StartSpawning();
             soundEffectManager.PlayGameStartSound();
             soundEffectManager.PlayGameMusic();
         }
@@ -193,7 +193,7 @@ namespace SakeShooter
         {
             _isGameRunning = false;
 
-            masuManager.EndSpawning();
+            masuSpawnManager.EndSpawning();
             soundEffectManager.PlayGameEndSound();
             
             soundEffectManager.PlayRestMusic();
@@ -220,7 +220,7 @@ namespace SakeShooter
         
         private void ChangeSpawnRate()
         {
-            masuManager.ChangeSpawnRate(_maxSpawnInterval[_currentDifficultyLevel],
+            masuSpawnManager.ChangeSpawnRate(_maxSpawnInterval[_currentDifficultyLevel],
                 _minSpawnInterval[_currentDifficultyLevel]);
         }
         private void ChangeDifficulty()
