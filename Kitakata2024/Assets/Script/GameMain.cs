@@ -17,10 +17,6 @@ namespace SakeShooter
         public MasuSpawnManager masuSpawnManager;
         public ScoreRecorder scoreRecorder;
         public SakeGun sakeGun;
-
-        [Header("-------- 雰囲気 ----------")] 
-        public Light normalLight;
-        public Light nightLight;
         
         private int _score = 0;
         
@@ -46,7 +42,6 @@ namespace SakeShooter
         {
             UpdateHighScore();
             PlayMusic();
-            ToggleNormalLight();
         }
         
         private void Update()
@@ -128,15 +123,7 @@ namespace SakeShooter
         {
             if (Input.GetKeyDown(KeyCode.D))　SetDifficulty();
             if (Input.GetKeyDown(KeyCode.P)) _isScoreRecorded = false;
-                
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                ToggleNormalLight();
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                ToggleNightLight();
-            }
+            
             
             if(Input.GetKey(KeyCode.P) && Input.GetKeyDown(KeyCode.C))
             {
@@ -145,20 +132,6 @@ namespace SakeShooter
             }
         }
         
-        // 雰囲気を変える
-        private void ToggleNormalLight()
-        {
-            normalLight.enabled = true;
-            nightLight.enabled = false;
-        }
-        
-        // 雰囲気を変える
-        private void ToggleNightLight()
-        {
-            // Enable the night light and disable the normal light
-            nightLight.enabled = true;
-            normalLight.enabled = false;
-        }
         private void SetDifficulty()
         {
            
