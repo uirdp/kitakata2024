@@ -1,6 +1,5 @@
 using System;
 using Cysharp.Threading.Tasks;
-using SakeShooter;
 using UnityEngine;
 using SakeShooterSystems;
 
@@ -77,7 +76,6 @@ namespace SakeShooter
         }
 
         
-        //　応急措置
         private async void PlayMusic()
         {
             await UniTask.Delay(TimeSpan.FromSeconds(1.0f));
@@ -124,7 +122,6 @@ namespace SakeShooter
             if (Input.GetKeyDown(KeyCode.D))　SetDifficulty();
             if (Input.GetKeyDown(KeyCode.P)) _isScoreRecorded = false;
             
-            
             if(Input.GetKey(KeyCode.P) && Input.GetKeyDown(KeyCode.C))
             {
                 scoreRecorder.ResetAllScores();
@@ -134,14 +131,12 @@ namespace SakeShooter
         
         private void SetDifficulty()
         {
-           
                 Difficulty d = difficultySetting.GetNextDifficulty();
                 difficultySetting.SetDifficulty(d);
                 
                 uiController.ShowDifficulty(d.ToString());
                 
                 SetParameters();
-            
         }
         
         // 難易度設定によってパラメータを設定
