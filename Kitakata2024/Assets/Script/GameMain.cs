@@ -22,14 +22,13 @@ namespace SakeShooter
         public Light normalLight;
         public Light nightLight;
         
-        
         private int _score = 0;
         
         private float[] _maxSpawnInterval = { 7.0f, 5.0f, 3.0f };
         private float[] _minSpawnInterval = { 4.0f, 2.0f, 0.5f };
-        // enumにした方がいいかも？
-        // こっちのdifficultyは全体の難易度ではなく相対的
-        private int _currentDifficultyLevel = 0;
+        
+        // ゲーム開始から時間がたつとスポーンする升の量が増える
+        private int _masuSpawnIntervalLevel = 0;
         private int _scoreByOneMasu = 100;
 
         private const float GameTime = 70.0f;
@@ -42,7 +41,33 @@ namespace SakeShooter
         private bool _isMasuSpawning = false;
 
         private bool _isScoreRecorded = true;
+        
+        private void Start()
+        {
+            UpdateHighScore();
+            PlayMusic();
+            ToggleNormalLight();
+        }
+        
+        private void Update()
+        {
+            ProcessInput();
+             
+            if (_isGamePaused)
+            {
+                ProcessInputPaused();
+            }
 
+            if (_isGameRunning)
+            {
+                CountDown();
+                UpdateUI();
+                if (_masuSpawnIntervalLevel == 0 && _elapsedTime >= 15.0f) ChangeMasuSpawnLevel();
+                if (_masuSpawnIntervalLevel == 1 && _elapsedTime >= 30.0f) ChangeMasuSpawnLevel();
+            }
+            
+        }
+        
         public void OnMasuExit(MasuExitStatus status)
         {
             switch (status)
@@ -56,12 +81,6 @@ namespace SakeShooter
             }
         }
 
-        private void Start()
-        {
-            UpdateHighScore();
-            PlayMusic();
-            ToggleNormalLight();
-        }
         
         //　応急措置
         private async void PlayMusic()
@@ -180,7 +199,7 @@ namespace SakeShooter
             _isGameRunning = true;
             _score = 0;
             _elapsedTime = 0.0f;
-            _currentDifficultyLevel = 0;
+            _masuSpawnIntervalLevel = 0;
             
             ChangeSpawnRate();
             
@@ -220,13 +239,13 @@ namespace SakeShooter
         
         private void ChangeSpawnRate()
         {
-            masuSpawnManager.ChangeSpawnRate(_maxSpawnInterval[_currentDifficultyLevel],
-                _minSpawnInterval[_currentDifficultyLevel]);
+            masuSpawnManager.ChangeSpawnRate(_maxSpawnInterval[_masuSpawnIntervalLevel],
+                _minSpawnInterval[_masuSpawnIntervalLevel]);
         }
-        private void ChangeDifficulty()
+        private void ChangeMasuSpawnLevel()
         {
-            _currentDifficultyLevel++;
-            if(_currentDifficultyLevel > 3) _currentDifficultyLevel = 3;
+            _masuSpawnIntervalLevel++;
+            if(_masuSpawnIntervalLevel > 3) _masuSpawnIntervalLevel = 3;
             ChangeSpawnRate();
         }
 
@@ -288,23 +307,6 @@ namespace SakeShooter
             uiController.UpdateHighScore(highScores);
         }
         
-        private void Update()
-        {
-            ProcessInput();
-             
-            if (_isGamePaused)
-            {
-                ProcessInputPaused();
-            }
-
-            if (_isGameRunning)
-            {
-                CountDown();
-                UpdateUI();
-                if (_currentDifficultyLevel == 0 && _elapsedTime >= 15.0f) ChangeDifficulty();
-                if (_currentDifficultyLevel == 1 && _elapsedTime >= 30.0f) ChangeDifficulty();
-            }
-            
-        }
+       
     }
 }

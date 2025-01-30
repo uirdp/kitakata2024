@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 #endif
 
+// first persoon controllerを改造して作成しました
 namespace SakeShooter
 {
 	[RequireComponent(typeof(CharacterController))]
