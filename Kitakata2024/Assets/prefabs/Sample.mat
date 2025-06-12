@@ -98,7 +98,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Alpha: 0.773
+    - _Alpha: 0.595
     - _AlphaClip: 0
     - _AlphaToMask: 0
     - _Blend: 0
@@ -113,7 +113,7 @@ Material:
     - _DstBlend: 10
     - _DstBlendAlpha: 10
     - _EnvironmentReflections: 1
-    - _Fill: -1
+    - _Fill: 0.28
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0

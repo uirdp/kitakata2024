@@ -32,7 +32,6 @@ namespace SakeShooter
         private MasuExitStatus _currentStatus = MasuExitStatus.Failure;
 
         private bool _hasReachedGoal = false;
-        // 満杯時のエフェクトで、一瞬向こう側を向いてしまって、ゴール判定になるため
         private bool _isPlayingFeedback = false; 
 
         public void Start()
@@ -67,6 +66,7 @@ namespace SakeShooter
 
         private async void Full()
         {
+            // 満杯時の演出
             _isPlayingFeedback = true;
             _currentStatus = MasuExitStatus.Success;
             

@@ -27,7 +27,6 @@ namespace SakeShooter
         private void Update()
         {
             Move();
-            Debug.Log(_speed);
         }
 
         private void Move()

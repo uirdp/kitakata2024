@@ -43,7 +43,7 @@ public class UIController : MonoBehaviour
         _upgrade.text = "";
         
         _score.text = "0";
-        _time.text = "Stopped";
+        _time.text = "スペースキーで開始！";
     }
 
     public void ChangeUpgradeMessage(string m)

@@ -117,9 +117,10 @@ namespace SakeShooter
 
 		private void Update()
 		{
-			JumpAndGravity();
-			GroundedCheck();
-			Move();
+			// このゲームではジャンプや移動は使わない
+			//JumpAndGravity();
+			//GroundedCheck();
+			//Move();
 		}
 
 		private void LateUpdate()

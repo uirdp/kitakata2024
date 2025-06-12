@@ -33,8 +33,8 @@ namespace SakeShooter
             
             await PlayFeedbacks(status);
             
-            
             _onExitAction?.Invoke(masu);　// オブジェクトプールに戻る
+            if (_onExitAction == null) gameObject.SetActive(false);
             masuExitEvent.Raise(status);
         }
         

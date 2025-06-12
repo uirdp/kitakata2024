@@ -1,3 +1,5 @@
+// このシェーダー、何をやっているのかよくわからないです
+// このときはUnityのシェーダー触るの初めてだったので、思い出として取っておきます。
 Shader "Unlit/FluidShader"
 {
     Properties
@@ -41,15 +43,14 @@ Shader "Unlit/FluidShader"
             float4 _MainTex_ST;
             fixed _Alpha;
             fixed4 _Color;
-            float _Fill;
+            float _FillAmount;
 
             v2f vert (appdata v)
             {
                 v2f o;
                 
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                
-                o.alpha = v.vertex.z < _Fill * 0.01 ? (1.0, 1.0, 1.0, 1.0) : (1.0, 1.0, 1.0, 0.0);
+                o.alpha = v.vertex.z < _FillAmount * 0.01 ? (1.0, 1.0, 1.0, 1.0) : (1.0, 1.0, 1.0, 0.0);
                 
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                 UNITY_TRANSFER_FOG(o,o.vertex);
@@ -58,7 +59,6 @@ Shader "Unlit/FluidShader"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                // sample the texture
                 fixed4 col = _Color;
                 col.a = i.alpha;
                 // apply fog
