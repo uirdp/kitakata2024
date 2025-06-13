@@ -5,16 +5,16 @@ public class Scenes : MonoBehaviour
 {
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R) && Input.GetKey(KeyCode.LeftShift))
+        if(IsTitleScene() && Input.anyKeyDown)
+        {
+            LoadGameScene();
+		}
+
+		if (Input.GetKeyDown(KeyCode.R) && Input.GetKey(KeyCode.LeftShift))
         {
             if (IsGameScene())
             {
                 LoadTitleScene();
-            }
-
-            if (IsTitleScene())
-            {
-                LoadGameScene();
             }
         }
         

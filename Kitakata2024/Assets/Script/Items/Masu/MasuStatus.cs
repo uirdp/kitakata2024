@@ -53,7 +53,7 @@ namespace SakeShooter
             Vector3 position = fluidTransform.position;
             position.y = fluidMinHeight;
             fluid.transform.position = position;
-        }
+		}
     
         private void Fill(float amount)
         {
@@ -61,7 +61,7 @@ namespace SakeShooter
             
             Vector3 position = fluidTransform.position;
             position.y = Mathf.Lerp(fluidMinHeight, fluidMaxHeight, _currentAmount);
-            fluidTransform.position = position;
+			fluidTransform.position = position;
         }
 
         private async void Full()

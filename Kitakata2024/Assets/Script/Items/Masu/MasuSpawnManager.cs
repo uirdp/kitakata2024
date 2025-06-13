@@ -139,7 +139,7 @@ namespace SakeShooter
             var masuStatus = tawara.Status;
             var masuMovement = tawara.Movement;
             
-            masuStatus.Initialize(10000.0f);
+            masuStatus.Initialize(10000.0f); // TawaraはCapacity関係ないので大きな数値を入れておく
             masuMovement.Initialize(tawara, speed, acceleration, masuMoveDirection, position);
         }
         

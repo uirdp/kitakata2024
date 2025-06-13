@@ -15,7 +15,6 @@ namespace SakeShooterSystems
         public bool morePreciseCollisionDetection = false;
         
         //リストじゃなくて、連結キューを使った方がいい？
-        //升には連結キューを用いるが、弾にはリストを用いる（プールを使っているため、挙動がわからない）
         public GameObject Masu;
         private List<ICollider> _masuColliders = new List<ICollider>();
         private List<ICollider> _bulletColldiers = new List<ICollider>();
@@ -107,9 +106,10 @@ namespace SakeShooterSystems
                     {
                         if(!_collidersWithDetectedCollision.Contains(bcol))
                         {
-                            //is this a callback hell?
-                            // ここらへんもっとわかりやすくしたいなー
-                            mcol.InvokeOnHitDetected();
+                            Debug.Log($"Collision detected between {mcol.GameObject.name} and {bcol.GameObject.name}");
+							//is this a callback hell?
+							// ここらへんもっとわかりやすくしたい
+							mcol.InvokeOnHitDetected();
                             bcol.InvokeOnHitDetected();
                             //Hitした判定をつける
                             _collidersWithDetectedCollision.Add(bcol);
@@ -129,14 +129,15 @@ namespace SakeShooterSystems
             ColliderSizeData msize = mcol.Size;
             ColliderSizeData bsize = bcol.Size;
             
-            Vector3 mpos = mcol.GameObject.transform.position;
+			Vector3 mpos = mcol.GameObject.transform.position;
             Vector3 bpos = bcol.GameObject.transform.position;
-            
-            //升の方向に半径の大きさだけ移動、しなくてもおおむね問題ない
-            //if(morePreciseCollisionDetection) bpos += Vector3.Normalize(mpos-bpos) * bcol.Size.radius;
-            
-            //座標系の原点を升の中心に移動し、SDFを用いて衝突判定。
-            float d = SdBox(bpos - mpos, msize.size);
+
+			//升の方向に半径の大きさだけ移動、つまり弾の中心で判定する代わりに、弾の円周上の一点で判定するすようにする。
+            //大して変わらないのでoffで問題ないと思う
+			if(morePreciseCollisionDetection) bpos += Vector3.Normalize(mpos-bpos) * bcol.Size.radius;
+
+			//座標系の原点を升の中心に移動し、SDFを用いて衝突判定。
+			float d = SdBox(bpos - mpos, msize.size);
             return d < 0;
         }
         

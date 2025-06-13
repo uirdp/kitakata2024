@@ -110,10 +110,15 @@ namespace SakeShooter
             {
                 if(_isGameRunning)  EndGame();
             }
-            
-            if (Input.GetKeyDown(KeyCode.X))
+
+#if UNITY_EDITOR
+KeyCode quitKey = KeyCode.J;
+#else
+			KeyCode quitKey = KeyCode.Escape;
+#endif
+			if (Input.GetKeyDown(quitKey))
             {
-                TogglePauseGame();
+				TogglePauseGame();
             }
         }
         
@@ -127,7 +132,16 @@ namespace SakeShooter
                 scoreRecorder.ResetAllScores();
                 UpdateHighScore();
             }
-        }
+
+			if (Input.GetKeyDown(KeyCode.Q))
+			{
+#if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+#else
+				Application.Quit();
+#endif
+			}
+		}
         
         private void SetDifficulty()
         {
@@ -240,16 +254,15 @@ namespace SakeShooter
 
             if (_isGamePaused)
             {
-                // Logic to pause the game
                 Time.timeScale = 0f;
                 soundEffectManager.PlayPauseSound();
                 
                 Difficulty d = difficultySetting.GetCurrentDifficulty();
                 uiController.ShowDifficulty(d.ToString());
-            }
+
+			}
             else
             {
-                // Logic to resume the game
                 Time.timeScale = 1f;
                 soundEffectManager.PlayResumeSound();
                 

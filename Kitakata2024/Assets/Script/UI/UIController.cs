@@ -52,7 +52,9 @@ public class UIController : MonoBehaviour
     }
     public void ShowDifficulty(string d)
     {
-        _difficulty.text = d;
+        if (!string.IsNullOrEmpty(d)) d += "\n D: Change Difficulty\n Q: Quit Application\n ";
+        else d = "";
+            _difficulty.text = d;
     }
     public void UpdateTime(string t)
     {
@@ -65,6 +67,8 @@ public class UIController : MonoBehaviour
     
     public void UpdateHighScore(string v)
     {
+        Debug.Log("Updating High Score: " + v);
+		highScoreText.text = "";
         highScoreText.text = v;
     }
     
